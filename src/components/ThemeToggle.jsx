@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 
 const ThemeToggle = () => {
   const { isDarkMode, toggleTheme } = useTheme();
