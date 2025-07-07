@@ -23,7 +23,9 @@ function AppContent() {
   const smoothProgress = useSpring(scrollXProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const sections = ['home', 'about', 'experience', 'contact'];
-  const SCROLL_THRESHOLD = 100; // Threshold untuk trigger section change
+  const SCROLL_THRESHOLD = 300; // Increased threshold for less sensitivity
+  const TOUCH_THRESHOLD = 80; // Increased threshold for touch
+  const SCROLL_DEBOUNCE = 250; // Increased debounce time
 
   // Animation variants
   const pageVariants = {
@@ -74,17 +76,78 @@ function AppContent() {
     }
   };
 
-  // Scroll Observer dengan accumulator
+  // Check if element is interactive (button, link, input, etc.)
+  const isInteractiveElement = (element) => {
+    const interactiveTags = ['BUTTON', 'A', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
+    const interactiveRoles = ['button', 'link', 'tab', 'menuitem'];
+    const interactiveClasses = ['btn', 'button', 'link', 'clickable', 'interactive'];
+
+    // Check if element or its parents are interactive
+    let currentElement = element;
+    while (currentElement && currentElement !== document.body) {
+      // Check tag name
+      if (interactiveTags.includes(currentElement.tagName)) {
+        return true;
+      }
+
+      // Check role attribute
+      if (interactiveRoles.includes(currentElement.getAttribute('role'))) {
+        return true;
+      }
+
+      // Check class names
+      if (currentElement.className && typeof currentElement.className === 'string') {
+        if (interactiveClasses.some((cls) => currentElement.className.includes(cls))) {
+          return true;
+        }
+      }
+
+      // Check if element has click handlers
+      if (currentElement.onclick || currentElement.hasAttribute('onclick')) {
+        return true;
+      }
+
+      // Check if element is focusable
+      if (currentElement.tabIndex >= 0) {
+        return true;
+      }
+
+      currentElement = currentElement.parentElement;
+    }
+
+    return false;
+  };
+
+  // Improved scroll handler with better filtering
   useEffect(() => {
     let scrollTimeout;
+    let lastScrollTime = 0;
 
     const handleScroll = (e) => {
-      e.preventDefault();
-
       if (isLoading || isTransitioning) return;
+
+      const now = Date.now();
+
+      // Check if user is interacting with UI elements
+      if (isInteractiveElement(e.target)) {
+        return; // Don't prevent scroll on interactive elements
+      }
+
+      // Rate limiting - prevent too frequent scroll events
+      if (now - lastScrollTime < 50) {
+        return;
+      }
+      lastScrollTime = now;
+
+      e.preventDefault();
 
       const deltaY = e.deltaY;
       const currentIndex = sections.indexOf(activeSection);
+
+      // Only process significant scroll movements
+      if (Math.abs(deltaY) < 10) {
+        return;
+      }
 
       // Accumulate scroll untuk smooth transition
       setScrollAccumulator((prev) => {
@@ -112,11 +175,11 @@ function AppContent() {
         return newAccumulator;
       });
 
-      // Reset accumulator setelah tidak ada scroll dalam 150ms
+      // Reset accumulator setelah tidak ada scroll dalam waktu yang lebih lama
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         setScrollAccumulator(0);
-      }, 150);
+      }, SCROLL_DEBOUNCE);
     };
 
     // Attach scroll listener ke window untuk menangkap semua scroll events
@@ -128,28 +191,70 @@ function AppContent() {
     };
   }, [activeSection, isLoading, isTransitioning]);
 
-  // Touch/swipe support untuk mobile
+  // Improved touch/swipe support untuk mobile
   useEffect(() => {
     let touchStartY = 0;
     let touchEndY = 0;
+    let touchStartTime = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let isTouching = false;
 
     const handleTouchStart = (e) => {
+      // Don't handle touch on interactive elements
+      if (isInteractiveElement(e.target)) {
+        return;
+      }
+
+      isTouching = true;
       touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
     };
 
     const handleTouchMove = (e) => {
-      e.preventDefault(); // Prevent default scrolling
+      if (!isTouching || isInteractiveElement(e.target)) {
+        return;
+      }
+
       touchEndY = e.touches[0].clientY;
+      touchEndX = e.touches[0].clientX;
+
+      const deltaY = Math.abs(touchStartY - touchEndY);
+      const deltaX = Math.abs(touchStartX - touchEndX);
+
+      // Only prevent default if it's a clear vertical swipe
+      if (deltaY > deltaX && deltaY > 30) {
+        e.preventDefault();
+      }
     };
 
-    const handleTouchEnd = () => {
-      if (isLoading || isTransitioning) return;
+    const handleTouchEnd = (e) => {
+      if (!isTouching || isLoading || isTransitioning) {
+        isTouching = false;
+        return;
+      }
+
+      isTouching = false;
+
+      // Don't handle touch on interactive elements
+      if (isInteractiveElement(e.target)) {
+        return;
+      }
 
       const deltaY = touchStartY - touchEndY;
+      const deltaX = Math.abs(touchStartX - touchEndX);
+      const touchDuration = Date.now() - touchStartTime;
       const currentIndex = sections.indexOf(activeSection);
 
-      // Minimum swipe distance
-      if (Math.abs(deltaY) > 50) {
+      // More strict conditions for touch navigation
+      // Must be: vertical swipe, minimum distance, not too slow, not too fast
+      if (
+        Math.abs(deltaY) > TOUCH_THRESHOLD && // Minimum swipe distance
+        Math.abs(deltaY) > deltaX * 1.5 && // More vertical than horizontal
+        touchDuration > 100 && // Not too fast (prevents accidental swipes)
+        touchDuration < 1000 // Not too slow (prevents accidental swipes)
+      ) {
         let targetIndex = currentIndex;
 
         if (deltaY > 0) {
@@ -166,9 +271,9 @@ function AppContent() {
       }
     };
 
-    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
@@ -181,6 +286,11 @@ function AppContent() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (isLoading || isTransitioning) return;
+
+      // Don't handle keyboard navigation if user is typing in input fields
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
 
       const currentIndex = sections.indexOf(activeSection);
       let targetIndex = currentIndex;
