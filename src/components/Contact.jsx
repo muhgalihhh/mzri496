@@ -59,7 +59,7 @@ const Contact = () => {
     {
       name: 'WhatsApp',
       icon: 'bxl-whatsapp',
-      url: 'https://wa.me/085799196683',
+      url: 'https://wa.me/6285799196683',
       color: 'hover:text-green-400',
     },
   ];
