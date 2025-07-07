@@ -13,7 +13,6 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
   ];
 
   const handleItemClick = (id) => {
-    // Gunakan onNavigate prop untuk scroll ke section yang tepat
     if (onNavigate) {
       onNavigate(id);
     }
@@ -36,15 +35,11 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
           }}
         >
           {/* Navigation Items */}
-          <div className={`relative flex flex-col p-4 space-y-3 border shadow-2xl rounded-2xl ${theme.navBackground}`}>
-            {/* Hide Toggle Button - positioned absolutely in top-right corner */}
+          <div className={`relative flex flex-col p-4 space-y-3 border shadow-2xl rounded-2xl ${theme.navBackground} ${theme.border}`}>
+            {/* Hide Toggle Button */}
             <button
               onClick={toggleHide}
-              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${
-                isDarkMode
-                  ? 'text-orange-200 bg-gradient-to-r from-orange-500/80 to-pink-500/80 backdrop-blur-xl border-orange-500/30 hover:bg-gradient-to-r hover:from-orange-500/90 hover:to-pink-500/90'
-                  : 'text-white bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-300/40 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-              }`}
+              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${theme.buttonSecondary} ${theme.textPrimary} ${theme.border}`}
             >
               <i className="text-sm bx bx-x"></i>
             </button>
@@ -69,11 +64,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
                 <div
                   className={`
                   absolute inset-0 rounded-xl blur-xl transition-opacity duration-300 -z-10
-                  ${
-                    activeSection === item.id
-                      ? 'bg-gradient-to-r from-orange-400/50 to-pink-400/50 opacity-100'
-                      : `bg-gradient-to-r ${isDarkMode ? 'from-orange-500/20 to-pink-500/20' : 'from-orange-300/30 to-pink-300/30'} opacity-0 group-hover:opacity-100`
-                  }
+                  ${activeSection === item.id ? `${theme.glowActive} opacity-100` : `${theme.glowHover} opacity-0 group-hover:opacity-100`}
                 `}
                 />
               </button>
@@ -91,15 +82,11 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
           }}
         >
           {/* Navigation Items */}
-          <div className={`relative flex p-3 space-x-2 border shadow-2xl rounded-2xl ${theme.navBackground}`}>
-            {/* Hide Toggle Button - positioned absolutely in top-right corner */}
+          <div className={`relative flex p-3 space-x-2 border shadow-2xl rounded-2xl ${theme.navBackground} ${theme.border}`}>
+            {/* Hide Toggle Button */}
             <button
               onClick={toggleHide}
-              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${
-                isDarkMode
-                  ? 'text-orange-200 bg-gradient-to-r from-orange-500/80 to-pink-500/80 backdrop-blur-xl border-orange-500/30 hover:bg-gradient-to-r hover:from-orange-500/90 hover:to-pink-500/90'
-                  : 'text-white bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-300/40 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-              }`}
+              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${theme.buttonSecondary} ${theme.border} ${theme.textPrimary}`}
             >
               <i className="text-sm bx bx-x"></i>
             </button>
@@ -118,18 +105,13 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
               >
                 <div className="flex flex-col items-center space-y-1">
                   <i className={`bx ${item.icon} text-base`}></i>
-                  <span className="text-xs leading-tight whitespace-nowrap">{item.label.includes("I'm") ? 'Galih' : item.label.split(' ')[0]}</span>
                 </div>
 
                 {/* Glow effect */}
                 <div
                   className={`
                   absolute inset-0 rounded-xl blur-xl transition-opacity duration-300 -z-10
-                  ${
-                    activeSection === item.id
-                      ? 'bg-gradient-to-r from-orange-400/50 to-pink-400/50 opacity-100'
-                      : `bg-gradient-to-r ${isDarkMode ? 'from-orange-500/20 to-pink-500/20' : 'from-orange-300/30 to-pink-300/30'} opacity-0 group-hover:opacity-100`
-                  }
+                  ${activeSection === item.id ? `${theme.glowActive} opacity-100` : `${theme.glowHover} opacity-0 group-hover:opacity-100`}
                 `}
                 />
               </button>
@@ -141,11 +123,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
         {isHidden && (
           <button
             onClick={toggleHide}
-            className={`fixed hidden p-3 transition-all duration-700 ease-out transform -translate-y-1/2 border shadow-lg md:block left-2 top-1/2 rounded-xl hover:scale-110 animate-pulse ${
-              isDarkMode
-                ? 'text-orange-200 bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-500/30 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-                : 'text-white bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-300/40 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-            }`}
+            className={`fixed hidden p-3 transition-all duration-700 ease-out transform -translate-y-1/2 border shadow-lg md:block left-2 top-1/2 rounded-xl hover:scale-110 animate-pulse ${theme.border} ${theme.textPrimary}`}
             style={{
               animation: 'slideInLeft 0.7s ease-out',
             }}
@@ -158,11 +136,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
         {isHidden && (
           <button
             onClick={toggleHide}
-            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 border shadow-lg md:hidden bottom-4 left-1/2 rounded-xl hover:scale-110 animate-pulse ${
-              isDarkMode
-                ? 'text-orange-200 bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-500/30 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-                : 'text-white bg-gradient-to-r from-orange-500/90 to-pink-500/90 backdrop-blur-xl border-orange-300/40 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500'
-            }`}
+            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 shadow-lg md:hidden bottom-4 left-1/2 rounded-xl hover:scale-110 animate-pulse border  ${theme.border} ${theme.textPrimary}`}
             style={{
               animation: 'slideInUp 0.7s ease-out',
             }}

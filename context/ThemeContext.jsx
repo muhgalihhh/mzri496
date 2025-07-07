@@ -109,14 +109,6 @@ export const ThemeProvider = ({ children }) => {
     },
   };
 
-  if (isDarkMode === null) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <div className="text-white">Loading theme...</div>
-      </div>
-    );
-  }
-
   const currentTheme = isDarkMode ? themeColors.dark : themeColors.light;
 
   return <ThemeContext.Provider value={{ isDarkMode, toggleTheme, theme: currentTheme }}>{children}</ThemeContext.Provider>;

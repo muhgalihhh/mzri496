@@ -1,6 +1,8 @@
+import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
 import { useTheme } from '../../hooks/useTheme';
+import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
 import Stack from '../blocks/Components/Stack/Stack';
 
 const About = () => {
@@ -82,114 +84,308 @@ const About = () => {
     },
   ];
 
+  // Calculate total width for seamless loop
+  const totalWidth = techStack.length * 120;
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+      },
+    },
+  };
+
+  const leftSectionVariants = {
+    hidden: { x: -50, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+        delay: 0.3,
+      },
+    },
+  };
+
+  const rightSectionVariants = {
+    hidden: { x: 50, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+        delay: 0.5,
+      },
+    },
+  };
+
+  const badgeVariants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 15,
+        stiffness: 200,
+        delay: 0.7,
+      },
+    },
+  };
+
+  const titleVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+        delay: 0.9,
+      },
+    },
+  };
+
+  const paragraphVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+        delay: 1.1,
+      },
+    },
+  };
+
+  const statsVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        damping: 20,
+        stiffness: 100,
+        delay: 1.3,
+      },
+    },
+  };
+
   return (
-    <main className={`flex items-center justify-center min-h-screen px-4 ${theme.backgroundGradient} lg:px-8`}>
-      <div className="relative w-full max-w-7xl">
-        <div className="grid items-center h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
-          {/* Left Section - Stack Component */}
-          <div className="flex items-center justify-center lg:justify-start">
-            <div className="relative w-full h-56 max-w-md">
-              <div className="relative flex justify-center w-full h-full">
-                <Stack randomRotation={true} sensitivity={180} sendToBackOnClick={false} cardDimensions={{ width: 300, height: 200 }} cardsData={images} />
-              </div>
-            </div>
-          </div>
+    <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
+      <motion.main className={`flex items-center justify-center min-h-screen px-2 lg:px-8`} initial="hidden" animate="visible" variants={containerVariants}>
+        <div className="relative w-full max-w-7xl">
+          <div className="grid items-center h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+            {/* Left Section - Stack Component */}
 
-          {/* Right Section - About Me */}
-          <div className="space-y-3 text-center lg:text-left">
-            <div className="space-y-6">
-              <div
-                className={`inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-full text-sm font-medium ${theme.textAccent} border ${theme.border} ${theme.borderHover}`}
-              >
-                <i className="mr-2 bx bx-user"></i>
-                About Me
-              </div>
-
-              <h1 className={`text-xl font-bold leading-tight ${theme.textPrimary} md:text-2xl lg:text-3xl xl:text-3xl`}>
-                Hi, I'm a
-                <br />
-                <span className={theme.gradientText}>Full Stack Developer</span>
-              </h1>
-
-              <p className={`max-w-lg mx-auto text-sm leading-relaxed md:text-md lg:text-md ${theme.textSecondary} lg:mx-0`}>
-                Passionate about creating exceptional digital experiences through innovative web solutions. I bring ideas to life with modern technologies and clean, efficient code.
-              </p>
-            </div>
-
-            {/* Tech Stack - Infinite Loop */}
-            <div className="space-y-4">
-              <h3 className={`text-md font-semibold ${theme.textPrimary}`}>Technologies I Work With</h3>
-              <div className={`relative overflow-hidden rounded-xl ${theme.cardBackground} p-2`}>
-                <div className="flex animate-scroll-infinite">
-                  {/* First set of tech stack */}
-                  {techStack.map((tech, index) => (
-                    <div
-                      key={`first-${index}`}
-                      className={`flex-shrink-0 mx-1 px-3 py-2 rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-lg transform hover:scale-105 transition-all duration-300`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <img src={tech.icon} alt={tech.name} className="w-4 h-4" />
-                        <span className="text-sm font-medium whitespace-nowrap">{tech.name}</span>
-                      </div>
-                    </div>
-                  ))}
-                  {/* Duplicate set for seamless loop */}
-                  {techStack.map((tech, index) => (
-                    <div
-                      key={`second-${index}`}
-                      className={`flex-shrink-0 mx-1 px-3 py-2 rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-lg transform hover:scale-105 transition-all duration-300`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <img src={tech.icon} alt={tech.name} className="w-4 h-4" />
-                        <span className="text-sm font-medium whitespace-nowrap">{tech.name}</span>
-                      </div>
-                    </div>
-                  ))}
+            <motion.div className="flex items-center justify-center lg:justify-start" variants={leftSectionVariants}>
+              <motion.div className="relative w-full h-56 max-w-md" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', damping: 20, stiffness: 300 }}>
+                <div className="relative flex justify-center w-full h-full">
+                  <Stack randomRotation={true} sensitivity={180} sendToBackOnClick={false} cardDimensions={{ width: 300, height: 200 }} cardsData={images} />
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Stats */}
-            <div className={`flex items-center justify-center lg:justify-start space-x-8 text-sm ${theme.textSecondary}`}>
-              <div className="flex items-center">
-                <i className={`bx bx-code-curly ${theme.textAccent} mr-2`}></i>
-                <span className={theme.textSecondary}>3+ Years Experience (Education)</span>
+            {/* Right Section - About Me */}
+            <motion.div className="space-y-2 text-center lg:text-left lg:space-y-3" variants={rightSectionVariants}>
+              <div className="space-y-3 lg:space-y-6">
+                <motion.div
+                  className={`inline-flex items-center px-3 py-1.5 lg:px-4 lg:py-2 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-full text-xs lg:text-sm font-medium ${theme.textAccent} border ${theme.border} ${theme.borderHover}`}
+                  variants={badgeVariants}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: '0 10px 25px rgba(251, 146, 60, 0.3)',
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.i
+                    className="mr-1.5 lg:mr-2 bx bx-user text-xs lg:text-sm"
+                    animate={{
+                      rotate: [0, 10, -10, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                    }}
+                  />
+                  About Me
+                </motion.div>
+
+                <motion.h1 className={`text-lg font-bold leading-tight ${theme.textPrimary} md:text-xl lg:text-2xl xl:text-3xl`} variants={titleVariants}>
+                  Hi, I'm a
+                  <br />
+                  <motion.span
+                    className={theme.gradientText}
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'linear',
+                    }}
+                    style={{
+                      backgroundSize: '200% 200%',
+                    }}
+                  >
+                    Full Stack Developer
+                  </motion.span>
+                </motion.h1>
+
+                <motion.p className={`max-w-lg mx-auto text-xs leading-relaxed md:text-sm lg:text-md ${theme.textSecondary} lg:mx-0`} variants={paragraphVariants}>
+                  Passionate about crafting digital experiences through web solutions, graphic design, and machine learning. Currently a student of Informatics at Universitas Jenderal Soedirman
+                  (UNSOED).
+                </motion.p>
               </div>
-              <div className="flex items-center">
-                <i className={`bx bx-briefcase ${theme.textAccent} mr-2`}></i>
-                <span className={theme.textSecondary}>5+ Projects</span>
-              </div>
-            </div>
+
+              {/* Tech Stack - Framer Motion Infinite Loop */}
+              <motion.div className="space-y-2 lg:space-y-4" variants={itemVariants}>
+                <motion.h3 className={`text-sm font-semibold ${theme.textPrimary} lg:text-md`} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5 }}>
+                  Technologies I Work With
+                </motion.h3>
+                <motion.div
+                  className={`relative overflow-hidden rounded-lg lg:rounded-xl ${theme.cardBackground} p-1.5 lg:p-2`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 1.7 }}
+                  whileHover={{
+                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <motion.div
+                    className="flex"
+                    animate={{
+                      x: [-totalWidth, 0],
+                    }}
+                    transition={{
+                      x: {
+                        repeat: Infinity,
+                        repeatType: 'loop',
+                        duration: 20,
+                        ease: 'linear',
+                      },
+                    }}
+                    whileHover={{
+                      animationPlayState: 'paused',
+                    }}
+                  >
+                    {/* Double the tech stack for seamless loop */}
+                    {[...Array(2)].map((_, setIndex) => (
+                      <div key={setIndex} className="flex">
+                        {techStack.map((tech, index) => (
+                          <motion.div
+                            key={`set-${setIndex}-${index}`}
+                            className={`flex-shrink-0 mx-0.5 lg:mx-1 px-2 py-1 lg:px-3 lg:py-2 rounded-md lg:rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-md lg:shadow-lg`}
+                            whileHover={{
+                              scale: 1.1,
+                              y: -5,
+                              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+                              transition: { duration: 0.2 },
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <div className="flex items-center gap-1 lg:gap-2">
+                              <motion.img src={tech.icon} alt={tech.name} className="w-3 h-3 lg:w-4 lg:h-4" whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }} />
+                              <span className="text-xs font-medium lg:text-sm whitespace-nowrap">{tech.name}</span>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ))}
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+
+              {/* Stats - Mobile Optimized */}
+              <motion.div className={`flex items-center justify-center lg:justify-start space-x-4 lg:space-x-8 text-xs lg:text-sm ${theme.textSecondary}`} variants={statsVariants}>
+                <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', damping: 20, stiffness: 300 }}>
+                  <motion.i
+                    className={`bx bx-code-curly ${theme.textAccent} mr-1 lg:mr-2 text-xs lg:text-sm`}
+                    animate={{
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                    }}
+                  />
+                  <span className={`${theme.textSecondary} hidden sm:inline`}>3+ Years Experience (Education)</span>
+                  <span className={`${theme.textSecondary} sm:hidden`}>3+ Years</span>
+                </motion.div>
+                <motion.div className="flex items-center" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', damping: 20, stiffness: 300 }}>
+                  <motion.i
+                    className={`bx bx-briefcase ${theme.textAccent} mr-1 lg:mr-2 text-xs lg:text-sm`}
+                    animate={{
+                      y: [0, -2, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                    }}
+                  />
+                  <span className={theme.textSecondary}>5+ Projects</span>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
+
+          {/* Background Decorations with Animation */}
+          <motion.div
+            className={`absolute w-32 h-32 rounded-full top-1/4 left-1/4 bg-gradient-to-r ${isDarkMode ? 'from-orange-500/10 to-pink-500/10' : 'from-orange-200/30 to-pink-200/30'} blur-3xl`}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
+          <motion.div
+            className={`absolute w-40 h-40 rounded-full bottom-1/4 right-1/4 bg-gradient-to-r ${isDarkMode ? 'from-pink-500/10 to-orange-500/10' : 'from-pink-200/30 to-orange-200/30'} blur-3xl`}
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              delay: 1,
+            }}
+          />
         </div>
-
-        {/* Background Decorations */}
-        <div className={`absolute w-32 h-32 rounded-full top-1/4 left-1/4 bg-gradient-to-r ${isDarkMode ? 'from-orange-500/10 to-pink-500/10' : 'from-orange-200/30 to-pink-200/30'} blur-3xl`}></div>
-        <div
-          className={`absolute w-40 h-40 rounded-full bottom-1/4 right-1/4 bg-gradient-to-r ${isDarkMode ? 'from-pink-500/10 to-orange-500/10' : 'from-pink-200/30 to-orange-200/30'} blur-3xl`}
-        ></div>
-      </div>
-
-      {/* Custom CSS for infinite scroll animation */}
-      <style jsx>{`
-        @keyframes scroll-infinite {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-scroll-infinite {
-          animation: scroll-infinite 20s linear infinite;
-        }
-
-        .animate-scroll-infinite:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
-    </main>
+      </motion.main>
+    </ClickSpark>
   );
 };
 
