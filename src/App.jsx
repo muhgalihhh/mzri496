@@ -279,30 +279,6 @@ function AppContent() {
             </AnimatePresence>
           </div>
 
-          {/* Progress bar */}
-          <motion.div className="fixed z-50 w-64 h-1 overflow-hidden transform -translate-x-1/2 rounded-full bottom-2 left-1/2 bg-white/20">
-            <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-orange-500 to-pink-500"
-              style={{
-                scaleX: (sections.indexOf(activeSection) + 1) / sections.length,
-                transformOrigin: 'left',
-              }}
-            />
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <div className="fixed z-40 transform -translate-y-1/2 right-6 top-1/2">
-            <div className="flex flex-col space-y-2">
-              {sections.map((section, index) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === section ? 'bg-orange-500 scale-150' : 'bg-white/30 hover:bg-white/50'}`}
-                />
-              ))}
-            </div>
-          </div>
-
           {/* Loading transition overlay */}
           {isTransitioning && <div className="fixed inset-0 z-30 pointer-events-none bg-black/10 backdrop-blur-sm" />}
         </>
