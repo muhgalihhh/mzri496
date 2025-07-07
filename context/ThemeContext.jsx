@@ -68,7 +68,7 @@ export const ThemeProvider = ({ children }) => {
       navText: 'text-gray-300',
       navActive: 'bg-gradient-to-r from-orange-500 to-pink-500 text-white',
       navHover: 'hover:bg-gray-700/50 hover:text-orange-300',
-      cardBackground: 'bg-gray-800/50 border-gray-700/50',
+      cardBackground: 'bg-white/5 border-gray-700/50 shadow-sm blur-sm',
       cardHover: 'hover:bg-gray-700/60',
       socialBackground: 'bg-gray-800/50 border-gray-700/50',
       socialText: 'text-gray-300',

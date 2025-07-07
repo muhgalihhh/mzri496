@@ -10,6 +10,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
     { id: 'about', label: 'About Me', icon: 'bx-user' },
     { id: 'experience', label: 'Experience', icon: 'bx-briefcase' },
     { id: 'contact', label: 'Contact Me', icon: 'bx-envelope' },
+    { id: 'sertifikat', label: 'Certificates', icon: 'bx-award' },
   ];
 
   const handleItemClick = (id) => {

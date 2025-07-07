@@ -215,7 +215,7 @@ const About = () => {
             <motion.div className="space-y-2 text-center lg:text-left lg:space-y-3" variants={rightSectionVariants}>
               <div className="space-y-3 lg:space-y-6">
                 <motion.div
-                  className={`inline-flex items-center px-3 py-1.5 lg:px-4 lg:py-2 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-full text-xs lg:text-sm font-medium ${theme.textAccent} border ${theme.border} ${theme.borderHover}`}
+                  className={`inline-flex items-center px-3 py-1.5 lg:px-4 lg:py-2 bg-gradient-to-r from-orange-500/20 to-pink-500/20 rounded-full text-xs lg:text-sm font-medium ${theme.textPrimary} border ${theme.border} ${theme.borderHover}`}
                   variants={badgeVariants}
                   whileHover={{
                     scale: 1.05,
@@ -224,7 +224,7 @@ const About = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <motion.i
-                    className="mr-1.5 lg:mr-2 bx bx-user text-xs lg:text-sm"
+                    className={`bx bx-user ${theme.textPrimary} mr-1 lg:mr-2`}
                     animate={{
                       rotate: [0, 10, -10, 0],
                     }}

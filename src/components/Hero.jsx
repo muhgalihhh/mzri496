@@ -111,7 +111,7 @@ const Hero = () => {
             <motion.div className="space-y-3" variants={itemVariants}>
               <div className="flex items-center justify-center h-12 overflow-hidden lg:h-16">
                 <motion.h2
-                  className={`text-2xl font-semibold lg:text-3xl transition-all duration-300 ${theme.gradientText} ${
+                  className={`text-2xl font-semibold lg:text-3xl transition-all duration-300 ${theme.gradientText} ${theme.textPrimary} ${
                     isAnimating ? 'transform translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'
                   }`}
                   variants={itemVariants}
@@ -133,10 +133,11 @@ const Hero = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <a
-                  className={`flex items-center gap-2 ${theme.buttonAccent}`}
+                  className={`flex items-center gap-2 ${theme.buttonAccent} ${theme.textPrimary}`}
                   href="https://drive.google.com/file/d/1tPTvRmk5DLqoaRvdunxnTpOaKdZ8Z5vK/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
+                  title="View Graphic Design Portfolio"
                 >
                   <i className="bx bx-eye"></i>
                   Check out my graphic design portfolio.

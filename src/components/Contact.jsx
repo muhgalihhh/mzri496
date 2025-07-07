@@ -142,7 +142,7 @@ const Contact = () => {
             ].map((item, index) => (
               <motion.div
                 key={item.title}
-                className={`p-2 md:p-4 rounded-lg md:rounded-xl ${theme.cardBackground} border ${theme.border}`}
+                className={`p-2 md:p-4 rounded-lg md:rounded-xl ${theme.cardBackground} ${theme.border}`}
                 variants={cardVariants}
                 whileHover={{
                   scale: 1.02,
@@ -185,7 +185,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   className={`
                     flex items-center justify-center md:justify-start space-x-1 md:space-x-2 
-                    px-2 md:px-3 py-1.5 md:py-2 rounded-md md:rounded-lg border transition-all duration-300
+                    px-2 md:px-3 py-1.5 md:py-2 rounded-md md:rounded-lg transition-all duration-300
                     ${theme.socialBackground} ${theme.socialText} ${theme.socialHover}
                   `}
                   variants={socialVariants}

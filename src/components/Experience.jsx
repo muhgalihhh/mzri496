@@ -190,7 +190,7 @@ const Experience = () => {
                             {activeTab === 'education' && item.logo ? (
                               <img src={item.logo} alt="Institution Logo" className="object-contain w-6 h-6 sm:w-8 sm:h-8" />
                             ) : (
-                              <i className={`bx ${item.icon} text-base sm:text-lg`}></i>
+                              <i className={`bx ${item.icon} text-base sm:text-lg ${theme.textPrimary}`}></i>
                             )}
                           </div>
 

@@ -11,7 +11,7 @@ const SimpleLoader = ({ isLoading, onComplete }) => {
     if (isLoading) {
       const timer = setTimeout(() => {
         onComplete && onComplete();
-      }, 3000);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [isLoading, onComplete]);

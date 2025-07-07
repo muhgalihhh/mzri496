@@ -1,9 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* 
 @layer base {
   body {
     @apply relative h-screen overflow-x-hidden font-sans text-white bg-black;
   }
+} */
+:root {
+  --gap: 25px;
+  --primary-clr: #fff;
+  --accect-clr: #ae3c68;
+}
+
+.img-slider {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container-slider-swip {
+  width: 80%;
 }
