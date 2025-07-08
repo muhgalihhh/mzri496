@@ -178,4 +178,15 @@ export const certificates = [
     skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
     credentialId: 'KELULUSAN PEMWEB/2023/INFORMATIKA UNSOED',
   },
+  {
+    id: 17,
+    title: 'Wakil Ketua Ekstrakurikuler Seni Rupa MAN 02 Cilacap',
+    issuer: 'Madrasah Aliyah Negeri 02 Cilacap',
+    date: '2021',
+    description: 'Sertifikat ini diberikan kepada Wakil Ketua Ekstrakurikuler Seni Rupa di MAN 02 Cilacap pada tahun 2021 sebagai pengakuan atas kontribusi dalam mengelola kegiatan seni rupa.',
+    image: '/images/wakil ketua.jpg',
+    pdfUrl: '/sertifikat/wakil ketua.pdf',
+    skills: ['Leadership', 'Event Management', 'Art Coordination'],
+    credentialId: 'B-1659/MA.11.2/PP.00 6/11/2021',
+  },
 ];
