@@ -43,6 +43,18 @@ const Experience = () => {
     });
   };
 
+  const nextPage = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const goToPage = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -411,60 +423,81 @@ const Experience = () => {
             </AnimatePresence>
           </div>
 
-          {/* Pagination */}
+          {/* Enhanced Circular Pagination - Same as Certificate page */}
           {totalPages > 1 && (
             <motion.div
-              className="flex items-center justify-center space-x-2"
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center justify-center px-4 mt-4 sm:mt-6"
               style={{
                 display: hasExpandedItem ? 'none' : 'flex',
               }}
             >
-              <motion.button
-                onClick={() => handlePageChange(Math.max(0, currentPage - 1))}
-                disabled={currentPage === 0}
-                className={`p-2 rounded-lg border transition-all duration-300 ${
-                  currentPage === 0
-                    ? `${theme.textSecondary} opacity-100 cursor-not-allowed border-gray-300/50`
-                    : `${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-pink-500/10 border-gray-300/50 hover:border-orange-500/30`
-                } ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/80 border-gray-200/50'} z-10`}
-                whileHover={{ scale: currentPage === 0 ? 1 : 1.1 }}
-                whileTap={{ scale: currentPage === 0 ? 1 : 0.9 }}
-              >
-                <i className="text-lg bx bx-chevron-left"></i>
-              </motion.button>
-
-              {Array.from({ length: totalPages }, (_, i) => (
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                {/* Previous Button */}
                 <motion.button
-                  key={i}
-                  onClick={() => handlePageChange(i)}
-                  className={`min-w-10 h-10 rounded-lg font-medium text-sm border transition-all duration-300 ${
-                    currentPage === i
-                      ? `${theme.navActive} border-orange-500/30`
-                      : `${theme.textSecondary} hover:${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-pink-500/10 border-gray-300/50 hover:border-orange-500/30`
-                  } ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/80 border-gray-200/50'} z-10`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={prevPage}
+                  disabled={currentPage === 0}
+                  className={`p-2 sm:p-2.5 rounded-full ${theme.buttonAccent} ${theme.border} disabled:opacity-50 disabled:cursor-not-allowed text-sm`}
                 >
-                  {i + 1}
+                  <i className="bx bx-chevron-left"></i>
                 </motion.button>
-              ))}
 
-              <motion.button
-                onClick={() => handlePageChange(Math.min(totalPages - 1, currentPage + 1))}
-                disabled={currentPage === totalPages - 1}
-                className={`p-2 rounded-lg border transition-all duration-300 ${
-                  currentPage === totalPages - 1
-                    ? `${theme.textSecondary} opacity-100 cursor-not-allowed border-gray-300/50`
-                    : `${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-pink-500/10 border-gray-300/50 hover:border-orange-500/30`
-                } ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white/80 border-gray-200/50'} z-10`}
-                whileHover={{ scale: currentPage === totalPages - 1 ? 1 : 1.1 }}
-                whileTap={{ scale: currentPage === totalPages - 1 ? 1 : 0.9 }}
-              >
-                <i className="text-lg bx bx-chevron-right"></i>
-              </motion.button>
+                {/* Page Numbers */}
+                <div className="flex space-x-1 sm:space-x-2">
+                  {[...Array(totalPages)].map((_, index) => {
+                    // Show first page, last page, current page, and adjacent pages
+                    const showPage = index === 0 || index === totalPages - 1 || index === currentPage || index === currentPage - 1 || index === currentPage + 1;
+
+                    if (!showPage && index !== 1 && index !== totalPages - 2) {
+                      // Show ellipsis
+                      if (index === 1 || index === totalPages - 2) {
+                        return (
+                          <span key={index} className={`px-2 py-1 text-sm ${theme.textMuted}`}>
+                            ...
+                          </span>
+                        );
+                      }
+                      return null;
+                    }
+
+                    return (
+                      <motion.button
+                        key={index}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => goToPage(index)}
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-medium transition-all ${
+                          index === currentPage ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white' : `${theme.buttonAccent} ${theme.border} hover:bg-gray-300`
+                        }`}
+                      >
+                        {index + 1}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Next Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={nextPage}
+                  disabled={currentPage === totalPages - 1}
+                  className={`p-2 sm:p-2.5 rounded-full ${theme.buttonAccent} ${theme.border} disabled:opacity-50 disabled:cursor-not-allowed text-sm`}
+                >
+                  <i className="bx bx-chevron-right"></i>
+                </motion.button>
+              </div>
+
+              {/* Page Info */}
+              <div className="items-center hidden ml-4 text-sm sm:flex">
+                <span className={theme.textMuted}>
+                  Page {currentPage + 1} of {totalPages}
+                </span>
+              </div>
             </motion.div>
           )}
         </motion.div>

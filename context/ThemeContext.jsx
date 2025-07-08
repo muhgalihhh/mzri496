@@ -57,6 +57,7 @@ export const ThemeProvider = ({ children }) => {
   const themeColors = {
     dark: {
       background: 'bg-gray-900',
+      backgroundModal: 'shadow-lg ',
       backgroundGradient: 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900',
       textPrimary: 'text-white',
       textSecondary: 'text-gray-300',
@@ -83,6 +84,7 @@ export const ThemeProvider = ({ children }) => {
     },
     light: {
       background: 'bg-gray-50',
+      backgroundModal: 'bg-white',
       backgroundGradient: 'bg-gradient-to-br from-gray-50 via-white to-gray-100',
       textPrimary: 'text-gray-900',
       textSecondary: 'text-gray-600',
