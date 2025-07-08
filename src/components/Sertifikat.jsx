@@ -173,7 +173,7 @@ const Sertifikat = () => {
 
         {/* Enhanced Pagination */}
         {totalPages > 1 && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center px-4 mt-4 sm:mt-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="z-20 flex items-center justify-center px-4 mt-4 mb-10 sm:mt-6">
             <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Previous Button */}
               <motion.button
