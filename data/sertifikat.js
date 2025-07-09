@@ -88,10 +88,21 @@ export const certificates = [
     skills: ['Cybersecurity', 'Network Security', 'Digital Skills'],
     credentialId: '2009589840-757/TSA/BLSDM.Kominfo/2024',
   },
+  {
+    id: 9,
+    title: 'Laravel : Pemula sampai Mahir',
+    issuer: 'Udemy',
+    date: '2025',
+    description: 'Sertifikat ini diberikan kepada peserta yang telah menyelesaikan kursus Laravel: Pemula sampai Mahir di Udemy.',
+    image: '/images/laravel.jpg',
+    pdfUrl: '/sertifikat/laravel sampai mahir.pdf',
+    skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel'],
+    credentialId: 'UC-65165d76-5b9e-40b6-abf7-05d8a9555b5d',
+  },
 
   // Sertifikat Panitia dan Organisasi
   {
-    id: 9,
+    id: 10,
     title: 'Staff Panitia Publikasi, Dekorasi, dan Dokumentasi Soedirman Technoporia 2022',
     issuer: 'HMIF Unsoed',
     date: '2022',
@@ -102,7 +113,7 @@ export const certificates = [
     credentialId: '898/STF/PN/STech/HMIF/I/2022',
   },
   {
-    id: 10,
+    id: 11,
     title: 'Staff Panitia Publikasi, Dekorasi, dan Dokumentasi Pengabdian Masyarakat HMIF Unsoed 2023',
     issuer: 'HMIF Unsoed',
     date: '2023',
@@ -113,7 +124,7 @@ export const certificates = [
     credentialId: '220/STF/PN/PM/HMIF/I/2023',
   },
   {
-    id: 11,
+    id: 12,
     title: 'Staff PDD Informatics Championship 2023',
     issuer: 'HMIF Unsoed',
     date: '2023',
@@ -124,7 +135,7 @@ export const certificates = [
     credentialId: '223/STF/PN/IC/HMIF/I/2023',
   },
   {
-    id: 12,
+    id: 13,
     title: 'Staff Medkominfo HMIF Unsoed 2023',
     issuer: 'HMIF Unsoed',
     date: '2023',
@@ -135,7 +146,7 @@ export const certificates = [
     credentialId: '450/STF/P/Pengurus/HMIF/II/2023',
   },
   {
-    id: 13,
+    id: 14,
     title: 'Staff Medkominfo HMIF Unsoed 2024',
     issuer: 'HMIF Unsoed',
     date: '2024',
@@ -146,7 +157,7 @@ export const certificates = [
     credentialId: '961/STF/P/Pengurus/HMIF/II/2025',
   },
   {
-    id: 14,
+    id: 15,
     title: 'Staff Panitia Publikasi, Dekorasi, dan Dokumentasi Dies Natalis HMIF Unsoed 2024',
     issuer: 'HMIF Unsoed',
     date: '2024',
@@ -157,7 +168,7 @@ export const certificates = [
     credentialId: '898/STF/PN/DiesNat/HMIF/I/2025',
   },
   {
-    id: 15,
+    id: 16,
     title: 'Koordinator Panitia Publikasi, Dekorasi, dan Dokumentasi Paguyuban Sinau Programming 2024',
     issuer: 'HMIF Unsoed',
     date: '2024',
@@ -168,7 +179,7 @@ export const certificates = [
     credentialId: '278/STF/PN/PSP/HMIF/XI/2024',
   },
   {
-    id: 16,
+    id: 17,
     title: 'Kelulusan Pemrograman Web Bootcamp Jurusan',
     issuer: 'Informatika Unsoed',
     date: '2023',
@@ -179,7 +190,7 @@ export const certificates = [
     credentialId: 'KELULUSAN PEMWEB/2023/INFORMATIKA UNSOED',
   },
   {
-    id: 17,
+    id: 18,
     title: 'Wakil Ketua Ekstrakurikuler Seni Rupa MAN 02 Cilacap',
     issuer: 'Madrasah Aliyah Negeri 02 Cilacap',
     date: '2021',
@@ -190,7 +201,7 @@ export const certificates = [
     credentialId: 'B-1659/MA.11.2/PP.00 6/11/2021',
   },
   {
-    id: 18,
+    id: 19,
     title: 'Staff Publikasi, Dekorasi, dan Dokumentasi acara Maskrab Makrab Informatika 2024',
     issuer: 'HMIF Unsoed',
     date: '2024',
