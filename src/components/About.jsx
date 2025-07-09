@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useTheme } from '../../hooks/useTheme';
 import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
@@ -7,7 +7,9 @@ import Stack from '../blocks/Components/Stack/Stack';
 
 const About = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [hoveredTech, setHoveredTech] = useState(null);
   const { theme, isDarkMode } = useTheme();
+  const scrollRef = useRef(null);
 
   const images = [
     { id: 1, img: '/images/1.png' },
@@ -84,8 +86,39 @@ const About = () => {
     },
   ];
 
-  // Calculate total width for seamless loop
-  const totalWidth = techStack.length * 120;
+  // Optimized infinite scroll using CSS animation
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollContainer = scrollRef.current;
+      const scrollWidth = scrollContainer.scrollWidth;
+      const containerWidth = scrollContainer.clientWidth;
+
+      // Reset scroll position when it reaches the end
+      const resetScroll = () => {
+        if (scrollContainer.scrollLeft >= scrollWidth / 2) {
+          scrollContainer.scrollLeft = 0;
+        }
+      };
+
+      // Use requestAnimationFrame for smooth scrolling
+      let animationId;
+      const scroll = () => {
+        if (!hoveredTech) {
+          scrollContainer.scrollLeft += 0.5;
+          resetScroll();
+        }
+        animationId = requestAnimationFrame(scroll);
+      };
+
+      animationId = requestAnimationFrame(scroll);
+
+      return () => {
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+        }
+      };
+    }
+  }, [hoveredTech]);
 
   // Animation variants
   const containerVariants = {
@@ -202,7 +235,6 @@ const About = () => {
         <div className="relative w-full max-w-7xl">
           <div className="grid items-center h-full grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
             {/* Left Section - Stack Component */}
-
             <motion.div className="flex items-center justify-center lg:justify-start" variants={leftSectionVariants}>
               <motion.div className="relative w-full h-56 max-w-md" whileHover={{ scale: 1.05 }} transition={{ type: 'spring', damping: 20, stiffness: 300 }}>
                 <div className="relative flex justify-center w-full h-full">
@@ -264,7 +296,7 @@ const About = () => {
                 </motion.p>
               </div>
 
-              {/* Tech Stack - Framer Motion Infinite Loop */}
+              {/* Tech Stack - Optimized Version */}
               <motion.div className="space-y-2 lg:space-y-4" variants={itemVariants}>
                 <motion.h3 className={`text-sm font-semibold ${theme.textPrimary} lg:text-md`} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.5 }}>
                   Technologies I Work With
@@ -277,48 +309,53 @@ const About = () => {
                   whileHover={{
                     boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
                   }}
+                  onMouseEnter={() => setHoveredTech(true)}
+                  onMouseLeave={() => setHoveredTech(false)}
                 >
-                  <motion.div
-                    className="flex"
-                    animate={{
-                      x: [-totalWidth, 0],
-                    }}
-                    transition={{
-                      x: {
-                        repeat: Infinity,
-                        repeatType: 'loop',
-                        duration: 20,
-                        ease: 'linear',
-                      },
-                    }}
-                    whileHover={{
-                      animationPlayState: 'paused',
+                  <div
+                    ref={scrollRef}
+                    className="flex overflow-hidden"
+                    style={{
+                      scrollbarWidth: 'none',
+                      msOverflowStyle: 'none',
                     }}
                   >
-                    {/* Double the tech stack for seamless loop */}
-                    {[...Array(2)].map((_, setIndex) => (
-                      <div key={setIndex} className="flex">
-                        {techStack.map((tech, index) => (
-                          <motion.div
-                            key={`set-${setIndex}-${index}`}
-                            className={`flex-shrink-0 mx-0.5 lg:mx-1 px-2 py-1 lg:px-3 lg:py-2 rounded-md lg:rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-md lg:shadow-lg`}
-                            whileHover={{
-                              scale: 1.1,
-                              y: -5,
-                              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
-                              transition: { duration: 0.2 },
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <div className="flex items-center gap-1 lg:gap-2">
-                              <motion.img src={tech.icon} alt={tech.name} className="w-3 h-3 lg:w-4 lg:h-4" whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }} />
-                              <span className="text-xs font-medium lg:text-sm whitespace-nowrap">{tech.name}</span>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    ))}
-                  </motion.div>
+                    <style jsx>{`
+                      div::-webkit-scrollbar {
+                        display: none;
+                      }
+                    `}</style>
+
+                    {/* Original set */}
+                    <div className="flex animate-none">
+                      {techStack.map((tech, index) => (
+                        <div
+                          key={`original-${index}`}
+                          className={`flex-shrink-0 mx-0.5 lg:mx-1 px-2 py-1 lg:px-3 lg:py-2 rounded-md lg:rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-md lg:shadow-lg transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:shadow-xl cursor-pointer`}
+                        >
+                          <div className="flex items-center gap-1 lg:gap-2">
+                            <img src={tech.icon} alt={tech.name} className="w-3 h-3 lg:w-4 lg:h-4 transition-transform duration-300 hover:rotate-12" />
+                            <span className="text-xs font-medium lg:text-sm whitespace-nowrap">{tech.name}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Duplicate set for seamless loop */}
+                    <div className="flex animate-none">
+                      {techStack.map((tech, index) => (
+                        <div
+                          key={`duplicate-${index}`}
+                          className={`flex-shrink-0 mx-0.5 lg:mx-1 px-2 py-1 lg:px-3 lg:py-2 rounded-md lg:rounded-lg bg-gradient-to-r ${tech.color} text-white shadow-md lg:shadow-lg transition-all duration-200 hover:scale-110 hover:-translate-y-1 hover:shadow-xl cursor-pointer`}
+                        >
+                          <div className="flex items-center gap-1 lg:gap-2">
+                            <img src={tech.icon} alt={tech.name} className="w-3 h-3 lg:w-4 lg:h-4 transition-transform duration-300 hover:rotate-12" />
+                            <span className="text-xs font-medium lg:text-sm whitespace-nowrap">{tech.name}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
               </motion.div>
 

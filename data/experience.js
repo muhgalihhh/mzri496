@@ -193,7 +193,7 @@ export const projectsData = [
     liveLink: 'https://chitchat-835v.onrender.com/',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-chat',
-    features: ['Authentication', 'Car Listings', 'Booking System', 'Admin Dashboard'],
+    features: ['Authentication', 'Real-time Messaging', 'User Profiles', 'Responsive Design'],
     category: 'Web Development', // Added category
   },
   {
@@ -280,6 +280,20 @@ export const projectsData = [
     icon: 'bx-book',
     features: ['User Acceptance Testing', 'Quality Assessment', 'ISO/IEC 25010 Standards', 'Data Analysis'],
     category: 'Data', // Added category
+  },
+  {
+    id: 17,
+    title: 'RentaCar - Aplikasi Penyewaan Mobil Berbasis Web dengan Laravel',
+    tech: ['PHP', 'Laravel', 'MySQL'],
+    period: '2024',
+    description:
+      'Penelitian ini bertujuan untuk mengevaluasi Sistem Informasi Manajemen Kepegawaian (SIMPEG) BKPSDM Kota Banjar menggunakan metode System Usability Scale (SUS). Penelitian ini melibatkan pengumpulan data melalui kuesioner SUS dan analisis hasilnya.',
+    githubLink: 'https://github.com/FawwazAfkar/Proyek-Kelompok-22',
+    liveLink: null,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
+    icon: 'bx-book',
+    features: ['User Authentication', 'Car Listings', 'Booking System', 'Admin Dashboard'],
+    category: 'Web Development', // Added category
   },
 ];
 

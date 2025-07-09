@@ -189,4 +189,15 @@ export const certificates = [
     skills: ['Leadership', 'Event Management', 'Art Coordination'],
     credentialId: 'B-1659/MA.11.2/PP.00 6/11/2021',
   },
+  {
+    id: 18,
+    title: 'Staff Publikasi, Dekorasi, dan Dokumentasi acara Maskrab Makrab Informatika 2024',
+    issuer: 'HMIF Unsoed',
+    date: '2024',
+    description: 'Sertifikat ini diberikan kepada staff yang berkontribusi dalam publikasi, dekorasi, dan dokumentasi acara Maskrab Makrab Informatika 2024.',
+    image: '/images/MM.jpg',
+    pdfUrl: '/sertifikat/MM.jpg',
+    skills: ['Documentation', 'Event Management', 'Graphic Design', 'Illustration'],
+    credentialId: '1039/STF/PN/MM/HMIF/VI/2024',
+  },
 ];
