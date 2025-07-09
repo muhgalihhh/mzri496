@@ -34,12 +34,6 @@ export const educationData = [
     grade: 'Multiple Certifications',
     achievements: ['Capstone Projects', 'Industry Certifications'],
     icon: 'bx-brain',
-    courses: [
-      { name: 'Machine Learning Specialization', platform: 'Coursera', link: 'https://coursera.org/specializations/machine-learning' },
-      { name: 'Full Stack Web Development', platform: 'freeCodeCamp', link: 'https://freecodecamp.org/learn' },
-      { name: 'Python for Data Science', platform: 'Udemy', link: 'https://udemy.com/course/python-for-data-science-and-machine-learning-bootcamp' },
-      { name: 'React Development', platform: 'Udacity', link: 'https://udacity.com/course/react-nanodegree--nd019' },
-    ],
   },
 ];
 
