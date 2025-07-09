@@ -55,6 +55,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80',
     icon: 'bx-food-menu',
     features: ['User Authentication', 'Task Submission', 'Approval Workflow', 'Status Tracking'],
+    category: 'Web Development', // Added category
   },
   {
     id: 1,
@@ -67,6 +68,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80',
     icon: 'bx-food-menu',
     features: ['Data Analysis', 'Genetic Algorithm', 'Optimization', 'Visualization'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 2,
@@ -80,6 +82,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&q=80',
     icon: 'bx-chart',
     features: ['Portfolio Optimization', 'Multi-Objective Genetic Algorithm', 'Data Visualization', 'Financial Analysis'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 3,
@@ -92,6 +95,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=400&q=80',
     icon: 'bx-music',
     features: ['User Profiling', 'Clustering', 'Dimensionality Reduction', 'Association Rule Mining'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 4,
@@ -105,6 +109,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-stats',
     features: ['Price Prediction', 'Classification', 'Regression', 'Data Visualization'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 5,
@@ -118,6 +123,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-image',
     features: ['Image Filtering', 'Edge Detection', 'Segmentation', 'Geometric Transformations'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 6,
@@ -131,6 +137,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-image',
     features: ['Image Filtering', 'Edge Detection', 'Segmentation', 'Geometric Transformations'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 7,
@@ -143,6 +150,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-lock',
     features: ['Penetration Testing', 'File Upload Vulnerability', 'Security Analysis', 'Linux Exploitation'],
+    category: 'Web Development', // Added category
   },
   {
     id: 8,
@@ -156,11 +164,12 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-wallet',
     features: ['Expense Tracking', 'Income Management', 'Financial Reporting', 'Budgeting Tools'],
+    category: 'Mobile Development', // Added category
   },
   {
     id: 9,
     title: 'Implementasi Fuzzy-SAW dalam Penentuan Dosen Pembimbing Kerja Praktek',
-    tech: ['Python', 'Fuzzy Logic', 'Decision Making'],
+    tech: ['Excel', 'Fuzzy Logic', 'Decision Making', 'Python'],
     period: '2024',
     description:
       '"Implementasi Fuzzy Simple Additive Weighting (Fuzzy-SAW) dalam Penentuan Dosen Pembimbing Kerja Praktek Universitas Jenderal Soedirman". Penelitian ini membahas penerapan metode Fuzzy-SAW untuk meningkatkan objektivitas dan akurasi dalam pemilihan dosen pembimbing kerja praktek (KP).',
@@ -170,6 +179,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-wallet',
     features: ['Fuzzy Logic', 'Decision Making', 'Academic Research', 'Data Analysis'],
+    category: 'Data', // Added category
   },
   {
     id: 10,
@@ -184,6 +194,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-chat',
     features: ['Authentication', 'Car Listings', 'Booking System', 'Admin Dashboard'],
+    category: 'Web Development', // Added category
   },
   {
     id: 11,
@@ -197,6 +208,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-chart',
     features: ['Fuzzy Logic', 'Data Analysis', 'Agricultural Research', 'Forecasting'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 12,
@@ -211,6 +223,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-chart',
     features: ['Fuzzy Logic', 'Data Analysis', 'Agricultural Research', 'Forecasting'],
+    category: 'Machine Learning', // Added category
   },
   {
     id: 13,
@@ -224,6 +237,7 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-movie',
     features: ['User Authentication', 'Movie Listings', 'Favorites', 'Responsive Design'],
+    category: 'Web Development', // Added category
   },
   {
     id: 14,
@@ -237,6 +251,35 @@ export const projectsData = [
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
     icon: 'bx-book',
     features: ['User Authentication', 'Report Generation', 'Grade Management', 'Responsive Design'],
+    category: 'Web Development', // Added category
+  },
+  {
+    id: 15,
+    title: 'PENGUJIAN KUALITAS APLIKASI GRAB MEGGUNAKAN METODE USER ACEEPTANCE TESTING (UAT) BERDASARKAN STANDAR ISO/IEC 25010 di Mahasiswa IF Unsoed',
+    tech: ['Excel', 'UAT', 'ISO/IEC 25010'],
+    period: '2024',
+    description:
+      'Penelitian ini bertujuan untuk menguji kualitas aplikasi Grab menggunakan metode User Acceptance Testing (UAT) berdasarkan standar ISO/IEC 25010 di kalangan mahasiswa IF Unsoed. Penelitian ini melibatkan pengumpulan data melalui kuesioner dan analisis hasilnya.',
+    githubLink: 'https://docs.google.com/spreadsheets/d/17ceUHqoGIbhcXDBpUxS5QCvjlzcMmMwgyKbnIrc6gQw/edit?usp=sharing',
+    liveLink: null,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
+    icon: 'bx-book',
+    features: ['User Acceptance Testing', 'Quality Assessment', 'ISO/IEC 25010 Standards', 'Data Analysis'],
+    category: 'Data', // Added category
+  },
+  {
+    id: 16,
+    title: 'EVALUASI SISTEM INFORMASI MANAJEMEN KEPEGAWAIAN (SIMPEG) BKPSDM KOTA BANJAR MENGGUNAKAN METODE SYSTEM USABILITY SCALE (SUS)',
+    tech: ['Excel', 'SUS', 'Analysis', 'System Usability'],
+    period: '2024',
+    description:
+      'Penelitian ini bertujuan untuk mengevaluasi Sistem Informasi Manajemen Kepegawaian (SIMPEG) BKPSDM Kota Banjar menggunakan metode System Usability Scale (SUS). Penelitian ini melibatkan pengumpulan data melalui kuesioner SUS dan analisis hasilnya.',
+    githubLink: 'https://drive.google.com/file/d/1myU1p1CXFgr-M65ZNpI1sLmFvorR0Zkc/view?usp=sharing',
+    liveLink: null,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
+    icon: 'bx-book',
+    features: ['User Acceptance Testing', 'Quality Assessment', 'ISO/IEC 25010 Standards', 'Data Analysis'],
+    category: 'Data', // Added category
   },
 ];
 

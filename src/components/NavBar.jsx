@@ -137,7 +137,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
         {isHidden && (
           <button
             onClick={toggleHide}
-            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 shadow-lg md:hidden bottom-4 left-2/3 rounded-xl hover:scale-110 animate-pulse border  ${theme.border} ${theme.textPrimary}`}
+            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 shadow-lg md:hidden bottom-4 left-3/4 rounded-xl hover:scale-110 animate-pulse border  ${theme.border} ${theme.textPrimary}`}
             style={{
               animation: 'slideInUp 0.7s ease-out',
             }}

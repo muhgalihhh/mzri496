@@ -22,6 +22,9 @@ const Sertifikat = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
 
+  // Check if mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+
   // Update items per page on window resize
   React.useEffect(() => {
     const handleResize = () => {
@@ -118,7 +121,7 @@ const Sertifikat = () => {
                       <img src={certificate.image} alt={certificate.title} className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" />
                       <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/60 to-transparent group-hover:opacity-100" />
 
-                      {/* More Compact Actions */}
+                      {/* Actions Button */}
                       <div className="absolute flex space-x-1 transition-all duration-300 opacity-0 top-2 right-2 group-hover:opacity-100">
                         <motion.button
                           whileHover={{ scale: 1.1 }}
@@ -135,34 +138,42 @@ const Sertifikat = () => {
                       </div>
                     </div>
 
-                    {/* More Compact Certificate Info */}
+                    {/* Certificate Info - Mobile shows only title, Desktop shows full info */}
                     <div className="p-2.5 sm:p-3">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <i className="mr-1 text-xs bx bx-calendar"></i>
-                          {new Date(certificate.date).getFullYear()}
+                      {/* Mobile View - Only Title */}
+                      <div className="block sm:hidden">
+                        <h3 className={`text-sm font-bold ${theme.textPrimary} line-clamp-2 leading-tight text-center`}>{certificate.title}</h3>
+                      </div>
+
+                      {/* Desktop View - Full Info */}
+                      <div className="hidden sm:block">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="flex items-center text-xs text-gray-500">
+                            <i className="mr-1 text-xs bx bx-calendar"></i>
+                            {new Date(certificate.date).getFullYear()}
+                          </div>
+                          <i className={`bx bx-award text-base ${theme.textAccent} ${theme.textSecondary}`}></i>
                         </div>
-                        <i className={`bx bx-award text-base ${theme.textAccent} ${theme.textSecondary}`}></i>
+
+                        <h3 className={`text-sm sm:text-base font-bold mb-1 ${theme.textPrimary} line-clamp-2 leading-tight`}>{certificate.title}</h3>
+
+                        <p className={`text-xs ${theme.textSecondary} mb-1.5 truncate`}>{certificate.issuer}</p>
+
+                        {/* Skills Tags */}
+                        <div className="flex flex-wrap gap-0.5 mb-1.5">
+                          {certificate.skills.slice(0, 3).map((skill, index) => (
+                            <span key={index} className={`text-xs px-1.5 py-0.5 rounded ${theme.buttonAccent} ${theme.border} ${theme.textSecondary}`}>
+                              {skill}
+                            </span>
+                          ))}
+                          {certificate.skills.length > 3 && (
+                            <span className={`text-xs px-1.5 py-0.5 rounded ${theme.buttonAccent} ${theme.textSecondary} ${theme.border}`}>+{certificate.skills.length - 3}</span>
+                          )}
+                        </div>
+
+                        {/* Credential ID */}
+                        <p className={`text-xs ${theme.textMuted} font-mono truncate`}>{certificate.credentialId}</p>
                       </div>
-
-                      <h3 className={`text-sm sm:text-base font-bold mb-1 ${theme.textPrimary} line-clamp-2 leading-tight`}>{certificate.title}</h3>
-
-                      <p className={`text-xs ${theme.textSecondary} mb-1.5 truncate`}>{certificate.issuer}</p>
-
-                      {/* More Compact Skills Tags */}
-                      <div className="flex flex-wrap gap-0.5 mb-1.5">
-                        {certificate.skills.slice(0, 3).map((skill, index) => (
-                          <span key={index} className={`text-xs px-1.5 py-0.5 rounded ${theme.buttonAccent} ${theme.border} ${theme.textSecondary}`}>
-                            {skill}
-                          </span>
-                        ))}
-                        {certificate.skills.length > 3 && (
-                          <span className={`text-xs px-1.5 py-0.5 rounded ${theme.buttonAccent} ${theme.textSecondary} ${theme.border}`}>+{certificate.skills.length - 3}</span>
-                        )}
-                      </div>
-
-                      {/* More Compact Credential ID */}
-                      <p className={`text-xs ${theme.textMuted} font-mono truncate`}>{certificate.credentialId}</p>
                     </div>
                   </motion.div>
                 </motion.div>
