@@ -1,8 +1,8 @@
+import 'boxicons/css/boxicons.min.css';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useMemo, useState } from 'react';
-import { useTheme } from '../../hooks/useTheme';
-
 import { tabs } from '../../data/experience';
+import { useTheme } from '../../hooks/useTheme';
 import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
 
 const Experience = () => {
@@ -153,7 +153,7 @@ const Experience = () => {
 
   return (
     <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-      <main className="flex flex-col items-center justify-center min-h-screen lg:px-20 p-2">
+      <main className="flex flex-col items-center justify-center min-h-screen p-2 lg:px-20">
         <motion.div className="w-full max-w-6xl" variants={containerVariants} initial="hidden" animate="visible">
           {/* Header */}
 
@@ -209,7 +209,7 @@ const Experience = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <i className="bx bx-grid-alt mr-1"></i>
+                  <i className="mr-1 bx bx-grid-alt"></i>
                   All Projects
                 </motion.button>
 
@@ -255,7 +255,7 @@ const Experience = () => {
                 exit="exit"
               >
                 {currentItems.length === 0 ? (
-                  <motion.div variants={cardVariants} className="col-span-full flex flex-col items-center justify-center py-12">
+                  <motion.div variants={cardVariants} className="flex flex-col items-center justify-center py-12 col-span-full">
                     <i className={`bx bx-folder-open text-6xl ${theme.textSecondary} mb-4`}></i>
                     <p className={`text-lg ${theme.textSecondary} text-center`}>No projects found in "{selectedCategory}" category</p>
                     <motion.button

@@ -289,6 +289,19 @@ export const projectsData = [
     features: ['User Authentication', 'Car Listings', 'Booking System', 'Admin Dashboard'],
     category: 'Web Development', // Added category
   },
+  {
+    id: 18,
+    title: 'Simple Cashier Mobile App',
+    tech: ['Flutter', 'Dart', 'Firebase'],
+    period: '2024',
+    description: 'Aplikasi Pencatatan Penjualan Sederhana.',
+    githubLink: 'https://github.com/muhgalihhh/simplecashier',
+    liveLink: null,
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
+    icon: 'bx-wallet',
+    features: ['User Authentication', 'Sales Tracking', 'Product Management', 'Responsive Design'],
+    category: 'Mobile Development', // Added category
+  },
 ];
 
 export const workData = [
