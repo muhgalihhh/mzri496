@@ -302,6 +302,19 @@ export const projectsData = [
     features: ['User Authentication', 'Sales Tracking', 'Product Management', 'Responsive Design'],
     category: 'Mobile Development', // Added category
   },
+  {
+    id: 19,
+    title: 'Scraping and Summarizing News Articles metode TF-IDF',
+    tech: ['Python', 'BeautifulSoup', 'NLTK'],
+    period: '2024',
+    description: 'Penelitian ini bertujuan untuk mengumpulkan dan meringkas artikel berita dari berbagai sumber menggunakan teknik web scraping dan pemrosesan bahasa alami.',
+    githubLink: 'https://github.com/muhgalihhh/scrapnsummarize',
+    liveLink: 'https://drive.google.com/file/d/1RpaeB2vChed5ftek3lm8A9qwTK_-noV-/view?usp=sharing',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=80',
+    icon: 'bx-wallet',
+    features: ['Web Scraping', 'News Summarization', 'Data Analysis', 'Natural Language Processing'],
+    category: 'Machine Learning', // Added category
+  },
 ];
 
 export const workData = [
