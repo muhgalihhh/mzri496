@@ -347,7 +347,7 @@ const About = () => {
                 </motion.div>
 
                 <motion.h1 className={`text-xl font-bold leading-tight ${theme.textPrimary} md:text-2xl lg:text-3xl`} variants={itemVariants}>
-                  Hi, I'm a
+                  Hi, I'm
                   <br />
                   <motion.span
                     className={theme.gradientText}
