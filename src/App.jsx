@@ -155,7 +155,7 @@ function AppContent() {
   };
 
   return (
-    <div className={`h-screen transition-all duration-500 ${theme.background} relative overflow-hidden p-4`}>
+    <div className={`h-screen transition-all duration-500 ${theme.background} relative p-4`}>
       {/* Loader */}
       <SimpleLoader isLoading={isLoading} onComplete={handleLoadingComplete} />
 

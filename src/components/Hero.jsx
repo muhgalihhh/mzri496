@@ -103,7 +103,7 @@ const Hero = () => {
               </motion.p>
 
               <motion.div className={`text-3xl font-bold leading-tight lg:text-6xl flex justify-center`} variants={nameVariants}>
-                <BlurText text="Muhamad Galih" delay={200} animateBy="letters" direction="top" className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`} />
+                <BlurText text="MuhamadGalih" delay={200} animateBy="letters" direction="top" className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`} />
               </motion.div>
             </motion.div>
 

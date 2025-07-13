@@ -210,7 +210,7 @@ const Experience = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <i className="mr-1 bx bx-grid-alt"></i>
-                  All Projects
+                  All
                 </motion.button>
 
                 {projectCategories.map((category) => (
@@ -236,7 +236,6 @@ const Experience = () => {
                           : 'bx-folder'
                       } mr-1`}
                     ></i>
-                    {category}
                   </motion.button>
                 ))}
               </div>
