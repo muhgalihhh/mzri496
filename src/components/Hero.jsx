@@ -139,8 +139,8 @@ const Hero = () => {
                   rel="noopener noreferrer"
                   title="View Graphic Design Portfolio"
                 >
-                  <i className="bx bx-eye"></i>
-                  Check out my Full Portfolio
+                  <i className="bx bx-file"></i>
+                  My Portfolio Details
                 </a>
               </motion.button>
             </motion.div>
