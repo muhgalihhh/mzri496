@@ -36,11 +36,11 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
           }}
         >
           {/* Navigation Items */}
-          <div className={`relative flex flex-col p-4 space-y-3 border shadow-2xl rounded-2xl ${theme.navBackground} ${theme.border}`}>
+          <div className={`relative flex flex-col p-4 space-y-3 border shadow-2xl rounded-2xl backdrop-blur-md bg-opacity-80 ${theme.navBackground} ${theme.border}`}>
             {/* Hide Toggle Button */}
             <button
               onClick={toggleHide}
-              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${theme.buttonSecondary} ${theme.textPrimary} ${theme.border}`}
+              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 backdrop-blur-sm bg-opacity-90 ${theme.buttonSecondary} ${theme.textPrimary} ${theme.border}`}
             >
               <i className="text-sm bx bx-x"></i>
             </button>
@@ -50,8 +50,12 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
                 key={item.id}
                 onClick={() => handleItemClick(item.id)}
                 className={`
-                  group relative px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300
-                  ${activeSection === item.id ? `${theme.navActive} shadow-lg transform scale-105` : `${theme.navText} ${theme.navHover} hover:transform hover:scale-105`}
+                  group relative px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300 backdrop-blur-sm
+                  ${
+                    activeSection === item.id
+                      ? `${theme.navActive} shadow-lg transform scale-105 bg-opacity-90`
+                      : `${theme.navText} ${theme.navHover} hover:transform hover:scale-105 bg-opacity-70 hover:bg-opacity-80`
+                  }
                 `}
                 style={{
                   transitionDelay: isHidden ? '0ms' : `${index * 50}ms`,
@@ -83,11 +87,11 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
           }}
         >
           {/* Navigation Items */}
-          <div className={`relative flex p-3 space-x-2 border shadow-2xl rounded-2xl ${theme.navBackground} ${theme.border}`}>
+          <div className={`relative flex p-3 space-x-2 border shadow-2xl rounded-2xl backdrop-blur-md bg-opacity-80 ${theme.navBackground} ${theme.border}`}>
             {/* Hide Toggle Button */}
             <button
               onClick={toggleHide}
-              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 ${theme.buttonSecondary} ${theme.border} ${theme.textPrimary}`}
+              className={`absolute -top-2 -right-2 p-1.5 transition-all duration-300 border shadow-lg rounded-lg hover:scale-110 backdrop-blur-sm bg-opacity-90 ${theme.buttonSecondary} ${theme.border} ${theme.textPrimary}`}
             >
               <i className="text-sm bx bx-x"></i>
             </button>
@@ -97,8 +101,12 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
                 key={item.id}
                 onClick={() => handleItemClick(item.id)}
                 className={`
-                  group relative px-3 py-2 rounded-xl font-medium text-xs transition-all duration-300
-                  ${activeSection === item.id ? `${theme.navActive} shadow-lg transform scale-105` : `${theme.navText} ${theme.navHover} hover:transform hover:scale-105`}
+                  group relative px-3 py-2 rounded-xl font-medium text-xs transition-all duration-300 backdrop-blur-sm
+                  ${
+                    activeSection === item.id
+                      ? `${theme.navActive} shadow-lg transform scale-105 bg-opacity-90`
+                      : `${theme.navText} ${theme.navHover} hover:transform hover:scale-105 bg-opacity-70 hover:bg-opacity-80`
+                  }
                 `}
                 style={{
                   transitionDelay: isHidden ? '0ms' : `${index * 50}ms`,
@@ -124,7 +132,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
         {isHidden && (
           <button
             onClick={toggleHide}
-            className={`fixed hidden p-3 transition-all duration-700 ease-out transform -translate-y-1/2 border shadow-lg md:block left-2 top-1/2 rounded-xl hover:scale-110 animate-pulse ${theme.border} ${theme.textPrimary}`}
+            className={`fixed hidden p-3 transition-all duration-700 ease-out transform -translate-y-1/2 border shadow-lg md:block left-2 top-1/2 rounded-xl hover:scale-110 animate-pulse backdrop-blur-sm bg-opacity-80 ${theme.border} ${theme.textPrimary}`}
             style={{
               animation: 'slideInLeft 0.7s ease-out',
             }}
@@ -137,7 +145,7 @@ const FloatingNavbar = ({ activeSection, onNavigate }) => {
         {isHidden && (
           <button
             onClick={toggleHide}
-            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 shadow-lg md:hidden bottom-4 left-3/4 rounded-xl hover:scale-110 animate-pulse border  ${theme.border} ${theme.textPrimary}`}
+            className={`fixed p-3 transition-all duration-700 ease-out transform -translate-x-1/2 shadow-lg md:hidden bottom-4 left-3/4 rounded-xl hover:scale-110 animate-pulse border backdrop-blur-sm bg-opacity-80 ${theme.border} ${theme.textPrimary}`}
             style={{
               animation: 'slideInUp 0.7s ease-out',
             }}

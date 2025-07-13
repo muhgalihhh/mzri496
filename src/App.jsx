@@ -168,12 +168,12 @@ function AppContent() {
             {isDarkMode ? (
               <>
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 -z-10"></div>
-                <div className="absolute w-96 h-96 top-20 right-20 bg-gradient-to-br from-orange-500/20 to-pink-500/20 blur-3xl -z-10" />
+                {/* <div className="absolute w-96 h-96 top-20 right-20 bg-gradient-to-br from-orange-500/20 to-pink-500/20 blur-3xl -z-10" /> */}
               </>
             ) : (
               <>
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-pink-50 -z-10"></div>
-                <div className="absolute w-96 h-96 top-20 right-20 bg-gradient-to-br from-orange-200/30 to-pink-200/30 blur-3xl -z-10" />
+                <div className="absolute inset-0 bg-white -z-10"></div>
+                {/* <div className="absolute w-96 h-96 top-20 right-20 bg-gradient-to-br from-orange-200/30 to-pink-200/30 blur-3xl -z-10" /> */}
               </>
             )}
           </div>

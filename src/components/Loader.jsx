@@ -22,11 +22,7 @@ const SimpleLoader = ({ isLoading, onComplete }) => {
     <motion.div className="fixed inset-0 z-50 flex flex-col items-center justify-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
       {/* Background with blur */}
       <div className="fixed inset-0 backdrop-blur-sm">
-        {isDarkMode ? (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-gray-900/95" />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-white/95 via-orange-50/95 to-pink-50/95" />
-        )}
+        {isDarkMode ? <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-gray-900/95" /> : <div className="absolute inset-0 bg-white/95" />}
       </div>
 
       {/* Loader Content */}
