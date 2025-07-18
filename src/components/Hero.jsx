@@ -134,13 +134,13 @@ const Hero = () => {
               >
                 <a
                   className={`flex items-center gap-2 ${theme.buttonAccent} ${theme.textPrimary}`}
-                  href="https://drive.google.com/file/d/1ymDx2UocBeN6nu-ippE7_4rQVDpmqk3M/view?usp=sharing"
+                  href="https://drive.google.com/drive/folders/1wyBAWd3lq89pH4aHfEDAP9YublHyDJLp?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="View Graphic Design Portfolio"
                 >
                   <i className="bx bx-file"></i>
-                  My Portfolio Details
+                  Full Portfolio (Gdrive)
                 </a>
               </motion.button>
             </motion.div>
