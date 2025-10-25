@@ -103,57 +103,50 @@ const AppContent = React.memo(() => {
     }, 500);
   }, []);
 
-  // Detect wheel scroll direction for section navigation
+  // Detect wheel scroll direction for section navigation - optimized with throttle
   useEffect(() => {
+    let lastScrollTime = 0;
+    const scrollThrottle = 100; // ms
+
     const handleWheel = (e) => {
+      const now = Date.now();
+
       if (isLoading || isScrollingRef.current || isNavigatingRef.current) {
-        if (isNavigatingRef.current) {
-          console.log('Wheel blocked - isNavigating is true');
-        }
         return;
       }
 
-      // Clear existing timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
+      // Throttle check
+      if (now - lastScrollTime < scrollThrottle) {
+        return;
       }
 
-      // Debounce scroll events
-      scrollTimeoutRef.current = setTimeout(() => {
-        const currentIndex = sections.indexOf(activeSection);
-        let targetIndex = currentIndex;
+      lastScrollTime = now;
 
-        if (e.deltaY > 30) {
-          // Scroll down threshold (reduced for better sensitivity)
-          targetIndex = Math.min(currentIndex + 1, sections.length - 1);
-        } else if (e.deltaY < -30) {
-          // Scroll up threshold (reduced for better sensitivity)
-          targetIndex = Math.max(currentIndex - 1, 0);
-        }
+      const currentIndex = sections.indexOf(activeSection);
+      let targetIndex = currentIndex;
 
-        if (targetIndex !== currentIndex) {
-          console.log('Wheel navigation:', sections[currentIndex], '->', sections[targetIndex]);
-          isScrollingRef.current = true;
-          setIsTransitioning(true);
-          setActiveSection(sections[targetIndex]);
+      if (e.deltaY > 30) {
+        targetIndex = Math.min(currentIndex + 1, sections.length - 1);
+      } else if (e.deltaY < -30) {
+        targetIndex = Math.max(currentIndex - 1, 0);
+      }
 
-          setTimeout(() => {
-            setIsTransitioning(false);
-            isScrollingRef.current = false;
-            console.log('Wheel navigation complete');
-          }, 500); // Slightly longer to prevent rapid scrolling
-        }
-      }, 50); // Small debounce delay
+      if (targetIndex !== currentIndex) {
+        isScrollingRef.current = true;
+        setIsTransitioning(true);
+        setActiveSection(sections[targetIndex]);
+
+        setTimeout(() => {
+          setIsTransitioning(false);
+          isScrollingRef.current = false;
+        }, 450);
+      }
     };
 
-    // Use passive: true for better performance
     window.addEventListener('wheel', handleWheel, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
     };
   }, [isLoading, activeSection, sections]);
 

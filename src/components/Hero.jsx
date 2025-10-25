@@ -65,42 +65,22 @@ const Hero = React.memo(() => {
 
   return (
     <main className="relative flex items-center justify-center min-h-screen px-6 overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Optimized Background - Static instead of animated for better performance */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute rounded-full w-96 h-96 blur-3xl opacity-20"
+        <div
+          className="absolute rounded-full w-96 h-96 blur-3xl opacity-15"
           style={{
             background: isDarkMode ? 'linear-gradient(to right, #3b82f6, #10b981)' : 'linear-gradient(to right, #60a5fa, #34d399)',
             top: '10%',
             right: '10%',
           }}
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
         />
-        <motion.div
-          className="absolute rounded-full w-96 h-96 blur-3xl opacity-20"
+        <div
+          className="absolute rounded-full w-96 h-96 blur-3xl opacity-15"
           style={{
             background: isDarkMode ? 'linear-gradient(to left, #06b6d4, #059669)' : 'linear-gradient(to left, #22d3ee, #10b981)',
             bottom: '10%',
             left: '10%',
-          }}
-          animate={{
-            x: [0, -50, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
           }}
         />
       </div>
