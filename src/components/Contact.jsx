@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
 
@@ -36,6 +36,13 @@ const Contact = () => {
         setSubmitStatus('');
       }, 3000);
     }, 2000);
+  };
+
+  // Handler for external links
+  const handleExternalLinkClick = () => {
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('externalLinkClicked'));
+    }, 100);
   };
 
   const socialLinks = [
@@ -185,6 +192,7 @@ const Contact = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={handleExternalLinkClick}
                     className={`
                     flex items-center justify-center md:justify-start space-x-1 md:space-x-2 
                     px-2 md:px-3 py-1.5 md:py-2 rounded-md md:rounded-lg transition-all duration-300

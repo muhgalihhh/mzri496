@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Fungsi untuk download CV yang sudah ada
 const downloadCV = () => {
+  // Dispatch event untuk reset navigation state
+  window.dispatchEvent(new CustomEvent('externalLinkClicked'));
+
   // Ganti dengan path file CV Anda (sesuaikan dengan lokasi file CV)
   const cvPath = '/cv.pdf'; // atau '/assets/cv/my-cv.pdf' atau path lainnya
 

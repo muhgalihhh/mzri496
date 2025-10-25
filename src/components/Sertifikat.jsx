@@ -12,6 +12,13 @@ const Sertifikat = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
 
+  // Handler for external links
+  const handleExternalLinkClick = () => {
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('externalLinkClicked'));
+    }, 100);
+  };
+
   // Categories
   const categories = [
     { id: 'all', label: 'All', icon: 'bx-grid-alt' },
@@ -197,6 +204,7 @@ const Sertifikat = () => {
                             whileTap={{ scale: 0.9 }}
                             onClick={(e) => {
                               e.stopPropagation();
+                              handleExternalLinkClick();
                               window.open(certificate.pdfUrl, '_blank');
                             }}
                             className="flex items-center gap-1 p-1 text-xs text-white rounded bg-white/20 backdrop-blur-sm hover:bg-white/30"
@@ -371,7 +379,10 @@ const Sertifikat = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => window.open(selectedCertificate.pdfUrl, '_blank')}
+                      onClick={() => {
+                        handleExternalLinkClick();
+                        window.open(selectedCertificate.pdfUrl, '_blank');
+                      }}
                       className={`p-2 rounded-full ${theme.buttonAccent} ${theme.border} text-sm ${theme.textPrimary}`}
                     >
                       <i className="bx bx-link-external"></i>

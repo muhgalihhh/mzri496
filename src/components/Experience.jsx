@@ -1,6 +1,6 @@
 import 'boxicons/css/boxicons.min.css';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { tabs } from '../../data/experience';
 import { useTheme } from '../../hooks/useTheme';
 import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
@@ -11,6 +11,13 @@ const Experience = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [expandedItems, setExpandedItems] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Handler for external links
+  const handleExternalLinkClick = () => {
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('externalLinkClicked'));
+    }, 100);
+  };
 
   // Get unique categories from projects data
   const projectCategories = useMemo(() => {
@@ -358,6 +365,7 @@ const Experience = () => {
                                           href={item.website}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -370,6 +378,7 @@ const Experience = () => {
                                           href={item.programLink}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -384,6 +393,7 @@ const Experience = () => {
                                             href={course.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            onClick={handleExternalLinkClick}
                                             className={`flex items-center gap-1 px-2 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                             whileHover={{ scale: 1.05 }}
                                           >
@@ -420,6 +430,7 @@ const Experience = () => {
                                           href={item.githubLink}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -432,6 +443,7 @@ const Experience = () => {
                                           href={item.liveLink}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -465,6 +477,7 @@ const Experience = () => {
                                           href={item.companyWebsite}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -477,6 +490,7 @@ const Experience = () => {
                                           href={item.companyLinkedIn}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >
@@ -489,6 +503,7 @@ const Experience = () => {
                                           href={item.portfolioLink}
                                           target="_blank"
                                           rel="noopener noreferrer"
+                                          onClick={handleExternalLinkClick}
                                           className={`flex items-center gap-1 px-3 py-1 text-xs rounded-full ${theme.textPrimary} hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-pink-500/20 transition-all duration-300`}
                                           whileHover={{ scale: 1.05 }}
                                         >

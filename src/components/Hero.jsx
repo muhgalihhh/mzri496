@@ -1,176 +1,237 @@
 import 'boxicons/css/boxicons.min.css';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
-import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
-import BlurText from '../blocks/TextAnimations/BlurText/BlurText';
 import CVDownloadButton from './CVButton';
 
-const Hero = () => {
+const Hero = React.memo(() => {
   const { isDarkMode, theme } = useTheme();
-  const roles = ['UI/UX Designer', 'Design Graphic', 'Machine Learning', 'Web Developer'];
+  const roles = useMemo(() => ['UI/UX Designer', 'Graphic Designer', 'ML Enthusiast', 'Web Developer'], []);
   const [currentRole, setCurrentRole] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentRole((prev) => (prev + 1) % roles.length);
-        setIsAnimating(false);
-      }, 300);
-    }, 3000);
-
+      setCurrentRole((prev) => (prev + 1) % roles.length);
+    }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [roles.length]);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
+  // Optimized animation variants
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.1,
+          delayChildren: 0.1,
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { y: 30, opacity: 0 },
+      visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          type: 'spring',
+          stiffness: 100,
+          damping: 12,
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
-  const nameVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 1,
-        ease: 'easeOut',
-      },
-    },
-  };
+  const socialLinks = useMemo(
+    () => [
+      { icon: 'bxl-github', href: 'https://github.com/muhgalihhh/', label: 'GitHub' },
+      { icon: 'bxl-linkedin', href: 'https://www.linkedin.com/in/muhamadgalih0803/', label: 'LinkedIn' },
+      { icon: 'bxl-instagram', href: 'https://www.instagram.com/muhgalihhh/', label: 'Instagram' },
+    ],
+    []
+  );
 
-  const buttonVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const socialVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-      },
-    },
+  // Handler for external links
+  const handleExternalLinkClick = () => {
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('externalLinkClicked'));
+    }, 100);
   };
 
   return (
-    <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-      <main className="flex flex-col items-center justify-center min-h-[calc(100vh-6rem)] px-4 lg:px-20 relative">
-        {/* Main Content - Text Content */}
+    <main className="relative flex items-center justify-center min-h-screen px-6 overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="z-10 max-w-xl text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          key={isDarkMode ? 'dark' : 'light'} // Force re-render on theme change
-        >
-          <div className="space-y-6">
-            {/* Greeting */}
-            <motion.div className="space-y-2" variants={itemVariants}>
-              <motion.p className={`text-lg font-medium ${theme.textPrimary}`} variants={itemVariants}>
-                Hi, I'm
-              </motion.p>
+          className="absolute rounded-full w-96 h-96 blur-3xl opacity-20"
+          style={{
+            background: isDarkMode ? 'linear-gradient(to right, #3b82f6, #10b981)' : 'linear-gradient(to right, #60a5fa, #34d399)',
+            top: '10%',
+            right: '10%',
+          }}
+          animate={{
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+        <motion.div
+          className="absolute rounded-full w-96 h-96 blur-3xl opacity-20"
+          style={{
+            background: isDarkMode ? 'linear-gradient(to left, #06b6d4, #059669)' : 'linear-gradient(to left, #22d3ee, #10b981)',
+            bottom: '10%',
+            left: '10%',
+          }}
+          animate={{
+            x: [0, -50, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      </div>
 
-              <motion.div className={`text-3xl font-bold leading-tight lg:text-6xl flex justify-center`} variants={nameVariants}>
-                <BlurText text="MuhamadGalih" delay={200} animateBy="letters" direction="top" className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`} />
-              </motion.div>
-            </motion.div>
-
-            {/* Role/Title with Animation */}
-            <motion.div className="space-y-3" variants={itemVariants}>
-              <div className="flex items-center justify-center h-12 overflow-hidden lg:h-16">
-                <motion.h2
-                  className={`text-2xl font-semibold lg:text-3xl transition-all duration-300 ${theme.gradientText} ${theme.textPrimary} ${
-                    isAnimating ? 'transform translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'
-                  }`}
-                  variants={itemVariants}
-                >
-                  {roles[currentRole]}
-                </motion.h2>
-              </div>
-              <motion.p className={`text-lg leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} variants={itemVariants}>
-                I create websites, design graphics, and am interested in machine learning solutions that enhance user experiences and drive innovation.
-              </motion.p>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div className="flex flex-col justify-center gap-4 pt-4 text-sm sm:flex-row" variants={buttonVariants}>
-              <CVDownloadButton theme={theme} />
-              <motion.button
-                className={`px-6 py-3 font-medium transition-all duration-300 border rounded-xl hover:scale-105 ${theme.buttonSecondary} ${theme.border}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <a
-                  className={`flex items-center gap-2 ${theme.buttonAccent} ${theme.textPrimary}`}
-                  href="https://drive.google.com/drive/folders/1wyBAWd3lq89pH4aHfEDAP9YublHyDJLp?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="View Graphic Design Portfolio"
-                >
-                  <i className="bx bx-file"></i>
-                  Full Portfolio (Gdrive)
-                </a>
-              </motion.button>
-            </motion.div>
-
-            {/* Social Links */}
-            <motion.div className="flex justify-center gap-4 pt-6" variants={containerVariants}>
-              {[
-                { icon: 'bxl-github', href: 'https://github.com/muhgalihhh/' },
-                { icon: 'bxl-linkedin', href: 'https://www.linkedin.com/in/muhamadgalih0803/' },
-                { icon: 'bxl-instagram', href: 'https://www.instagram.com/muhgalihhh/' },
-              ].map((social, index) => (
-                <motion.a
-                  key={social.icon}
-                  href={social.href}
-                  target="_blank"
-                  className={`p-3 transition-all duration-300 border rounded-xl hover:scale-110 ${theme.socialBackground} ${theme.socialText} ${theme.socialHover} ${theme.border}`}
-                  variants={socialVariants}
-                  custom={index}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <i className={`text-xl bx ${social.icon}`}></i>
-                </motion.a>
-              ))}
-            </motion.div>
+      {/* Main Content */}
+      <motion.div className="relative z-10 w-full max-w-4xl text-center" variants={containerVariants} initial="hidden" animate="visible">
+        {/* Greeting Badge */}
+        <motion.div variants={itemVariants} className="inline-block mb-6">
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur-sm ${theme.border} ${isDarkMode ? 'bg-gray-800/50' : 'bg-white/50'}`}>
+            <motion.span
+              className="w-2 h-2 rounded-full bg-emerald-500"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [1, 0.5, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+              }}
+            />
+            <span className={`text-sm font-medium ${theme.textSecondary}`}>Available for opportunities</span>
           </div>
         </motion.div>
-      </main>
-    </ClickSpark>
+
+        {/* Name with gradient animation */}
+        <motion.h1 variants={itemVariants} className="mb-4 text-5xl font-bold lg:text-7xl">
+          <motion.span
+            style={{
+              background: isDarkMode ? 'linear-gradient(to right, #60a5fa, #22d3ee, #34d399)' : 'linear-gradient(to right, #3b82f6, #06b6d4, #10b981)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+            animate={{
+              backgroundPosition: ['0% center', '200% center', '0% center'],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          >
+            Muhamad Galih
+          </motion.span>
+        </motion.h1>
+
+        {/* Animated Role */}
+        <motion.div variants={itemVariants} className="mb-6">
+          <div className="h-12 overflow-hidden">
+            <motion.h2
+              key={currentRole}
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -40, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className={`text-2xl font-semibold lg:text-3xl ${theme.textSecondary}`}
+            >
+              {roles[currentRole]}
+            </motion.h2>
+          </div>
+        </motion.div>
+
+        {/* Description */}
+        <motion.p variants={itemVariants} className={`max-w-2xl mx-auto mb-8 text-lg leading-relaxed ${theme.textMuted}`}>
+          Creating digital experiences through design and code. Passionate about UI/UX, machine learning, and building innovative solutions.
+        </motion.p>
+
+        {/* CTA Buttons */}
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 mb-12">
+          <CVDownloadButton theme={theme} />
+          <motion.a
+            href="https://drive.google.com/drive/folders/1wyBAWd3lq89pH4aHfEDAP9YublHyDJLp?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleExternalLinkClick}
+            className={`group relative inline-flex items-center gap-2 px-6 py-3 overflow-hidden font-medium border rounded-xl transition-all ${theme.buttonSecondary} ${theme.border}`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span className="relative z-10">View Portfolio</span>
+            <i className="relative z-10 text-lg transition-transform bx bx-right-arrow-alt group-hover:translate-x-1"></i>
+          </motion.a>
+        </motion.div>
+
+        {/* Social Links */}
+        <motion.div variants={itemVariants} className="flex justify-center gap-4">
+          {socialLinks.map((social) => (
+            <motion.a
+              key={social.icon}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleExternalLinkClick}
+              aria-label={social.label}
+              className={`relative p-3 rounded-xl border backdrop-blur-sm transition-all ${theme.border} ${isDarkMode ? 'bg-gray-800/50 hover:bg-gray-700/50' : 'bg-white/50 hover:bg-white/70'}`}
+              whileHover={{
+                scale: 1.1,
+                y: -2,
+              }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <i className={`text-xl bx ${social.icon} ${theme.textSecondary} transition-colors`}></i>
+            </motion.a>
+          ))}
+        </motion.div>
+
+        {/* Scroll Indicator - Moved to bottom right corner */}
+        <motion.div variants={itemVariants} className="fixed z-50 bottom-8 right-8">
+          <motion.div
+            animate={{
+              y: [0, 10, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            className={`flex flex-col items-center gap-2 ${theme.textMuted}`}
+          >
+            <span className="text-xs tracking-wider uppercase">Scroll</span>
+            <i className="text-xl bx bx-chevron-down"></i>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </main>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;

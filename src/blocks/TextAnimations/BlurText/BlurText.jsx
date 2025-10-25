@@ -42,17 +42,16 @@ const BlurText = ({
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threshold, rootMargin]);
 
-  const defaultFrom = useMemo(() => (direction === 'top' ? { filter: 'blur(10px)', opacity: 0, y: -50 } : { filter: 'blur(10px)', opacity: 0, y: 50 }), [direction]);
+  const defaultFrom = useMemo(() => (direction === 'top' ? { filter: 'blur(5px)', opacity: 0, y: -20 } : { filter: 'blur(5px)', opacity: 0, y: 20 }), [direction]);
 
   const defaultTo = useMemo(
     () => [
       {
-        filter: 'blur(5px)',
-        opacity: 0.5,
-        y: direction === 'top' ? 5 : -5,
+        filter: 'blur(2px)',
+        opacity: 0.7,
+        y: direction === 'top' ? 2 : -2,
       },
       { filter: 'blur(0px)', opacity: 1, y: 0 },
     ],
@@ -80,7 +79,8 @@ const BlurText = ({
 
         return (
           <motion.span
-            className="inline-block will-change-[transform,filter,opacity]"
+            className="inline-block"
+            style={{ willChange: 'transform, opacity' }}
             key={index}
             initial={fromSnapshot}
             animate={inView ? animateKeyframes : fromSnapshot}

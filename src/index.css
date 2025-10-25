@@ -8,6 +8,37 @@
     font-family: 'RFDewi', sans-serif;
   }
 }
+
+/* Performance optimizations */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
 :root {
   --gap: 25px;
   --primary-clr: #fff;
@@ -19,6 +50,7 @@
   src: url('/fonts/RFDewiExpanded-Regular.woff') format('woff'), url('/fonts/RFDewiExpanded-Regular.ttf') format('truetype');
   font-weight: 200;
   font-style: normal;
+  font-display: swap; /* Optimize font loading */
 }
 
 @font-face {
@@ -26,4 +58,5 @@
   src: url('/fonts/RFDewiExpanded-Bold.woff') format('woff'), url('/fonts/RFDewiExpanded-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
+  font-display: swap; /* Optimize font loading */
 }
