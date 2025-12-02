@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useTheme } from '../../hooks/useTheme';
+import { getAnimationConfig, isMobileDevice } from '../utils/deviceDetection';
 // import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark'; // Disabled for performance
 import Stack from '../blocks/Components/Stack/Stack';
 
@@ -12,6 +13,10 @@ const About = React.memo(() => {
   const [hoveredTech, setHoveredTech] = useState(null);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const { theme, isDarkMode } = useTheme();
+
+  // Get optimized animation config
+  const animConfig = useMemo(() => getAnimationConfig(), []);
+  const isMobile = useMemo(() => isMobileDevice(), []);
 
   const images = useMemo(
     () => [
@@ -164,39 +169,41 @@ const About = React.memo(() => {
   const currentTechArray = useMemo(() => (activeTab === 'programming' ? programmingTech : designTech), [activeTab, programmingTech, designTech]);
   const displayedTech = useMemo(() => currentTechArray.slice(currentTechIndex, currentTechIndex + 6), [currentTechArray, currentTechIndex]);
 
-  // Auto-rotate tech stack - optimized
+  // Auto-rotate tech stack - disabled on mobile for performance
   useEffect(() => {
+    // Skip auto-rotation on mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) return;
+
     const interval = setInterval(() => {
       setCurrentTechIndex((prev) => {
         const nextIndex = prev + 1;
         return nextIndex >= currentTechArray.length - 5 ? 0 : nextIndex;
       });
-    }, 3500); // Increased from 2000ms to 3500ms for slower rotation
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [currentTechArray.length]);
 
-  // Animation variants
+  // Simplified animation variants for mobile
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
+        staggerChildren: 0.05,
+        delayChildren: 0,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { opacity: 0 },
     visible: {
-      y: 0,
       opacity: 1,
       transition: {
-        type: 'spring',
-        damping: 20,
-        stiffness: 100,
+        duration: 0.3,
+        ease: 'easeOut',
       },
     },
   };
@@ -216,95 +223,67 @@ const About = React.memo(() => {
   };
 
   const rightSectionVariants = {
-    hidden: { x: 50, opacity: 0 },
+    hidden: { opacity: 0 },
     visible: {
-      x: 0,
       opacity: 1,
       transition: {
-        type: 'spring',
-        damping: 20,
-        stiffness: 100,
-        delay: 0.3,
+        duration: 0.3,
+        ease: 'easeOut',
       },
     },
   };
 
-  // Improved tech card animation variants with slower transitions
+  // Simplified tech card animation for mobile
   const techCardVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.9,
-      y: 10,
     },
     visible: {
       opacity: 1,
-      scale: 1,
-      y: 0,
       transition: {
-        type: 'spring',
-        damping: 25,
-        stiffness: 150,
-        duration: 0.8, // Slower entrance
+        duration: 0.3,
+        ease: 'easeOut',
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.9,
-      y: -10,
       transition: {
-        duration: 0.6, // Slower exit - increased from 0.3
-        ease: 'easeInOut',
+        duration: 0.2,
+        ease: 'easeIn',
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3,
       },
     },
   };
 
   const interactiveVariants = {
     hover: {
-      scale: 1.08,
-      rotate: [0, -3, 3, 0],
+      scale: 1.02,
       transition: {
-        rotate: {
-          duration: 0.4,
-          ease: 'easeInOut',
-        },
-        scale: {
-          duration: 0.3,
-        },
+        duration: 0.2,
       },
     },
     tap: {
-      scale: 0.95,
-      rotate: 8,
-      transition: {
-        duration: 0.1,
-      },
+      scale: 0.98,
     },
   };
 
-  // Modal animation variants
   const modalVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.8,
-      y: 20,
     },
     visible: {
       opacity: 1,
-      scale: 1,
-      y: 0,
       transition: {
-        type: 'spring',
-        damping: 20,
-        stiffness: 300,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      y: -20,
-      transition: {
-        duration: 0.3,
-        ease: 'easeInOut',
+        duration: 0.2,
       },
     },
   };
@@ -317,7 +296,7 @@ const About = React.memo(() => {
 
   return (
     // ClickSpark removed for performance
-    <motion.main className={`flex items-center justify-center min-h-screen px-4 py-8`} initial="hidden" animate="visible" variants={containerVariants}>
+    <motion.main className={`flex items-center justify-center min-h-[90vh] px-4 py-8 ${theme.textPrimary}`} initial="hidden" animate="visible" variants={containerVariants}>
       <div className="relative w-full max-w-6xl">
         <div className="grid items-center h-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-12">
           {/* Left Section - Stack Component */}
@@ -496,14 +475,16 @@ const About = React.memo(() => {
                           <AnimatePresence>
                             {hoveredTech === index && (
                               <motion.div
-                                className="absolute z-20 px-2 py-1 text-xs text-white transform -translate-x-1/2 bg-gray-900 rounded shadow-lg -top-10 left-1/2 whitespace-nowrap"
+                                className={`absolute z-20 px-2 py-1 text-xs text-white transform -translate-x-1/2 rounded shadow-lg -top-10 left-1/2 whitespace-nowrap ${
+                                  isDarkMode ? 'bg-gray-900' : 'bg-gray-800'
+                                }`}
                                 initial={{ opacity: 0, y: 10, scale: 0.8 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.8 }}
                                 transition={{ duration: 0.2 }}
                               >
                                 {tech.description}
-                                <div className="absolute w-2 h-2 transform rotate-45 -translate-x-1/2 bg-gray-900 -bottom-1 left-1/2"></div>
+                                <div className={`absolute w-2 h-2 transform rotate-45 -translate-x-1/2 -bottom-1 left-1/2 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-800'}`}></div>
                               </motion.div>
                             )}
                           </AnimatePresence>

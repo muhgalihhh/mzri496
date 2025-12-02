@@ -1,159 +1,55 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import React, { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider } from '../context/ThemeContext';
 import { useTheme } from '../hooks/useTheme';
 import Hero from './components/Hero';
 import SimpleLoader from './components/Loader';
 import FloatingNavbar from './components/NavBar';
 import ThemeToggle from './components/ThemeToggle';
+import { isMobileDevice } from './utils/deviceDetection';
 
 // Lazy load components for better performance
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
 const Experience = lazy(() => import('./components/Experience'));
 const Sertifikat = lazy(() => import('./components/Sertifikat'));
+const Gallery = lazy(() => import('./components/Gallery'));
 
 const AppContent = React.memo(() => {
   const { isDarkMode, theme } = useTheme();
   const [activeSection, setActiveSection] = useState('home');
   const [isLoading, setIsLoading] = useState(true);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Use refs to persist flags across renders
-  const isScrollingRef = useRef(false);
-  const isNavigatingRef = useRef(false);
-  const scrollTimeoutRef = useRef(null);
+  // Detect mobile once
+  const isMobile = useMemo(() => isMobileDevice(), []);
 
-  const sections = useMemo(() => ['home', 'about', 'experience', 'contact', 'sertifikat'], []);
+  const sections = useMemo(() => ['home', 'about', 'experience', 'gallery', 'contact', 'sertifikat'], []);
 
-  // Animation variants - memoized
-  const pageVariants = useMemo(
-    () => ({
-      initial: {
-        opacity: 0,
-        x: 50,
-        scale: 0.98,
-      },
-      in: {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-      },
-      out: {
-        opacity: 0,
-        x: -50,
-        scale: 0.98,
-      },
-    }),
-    []
-  );
-
-  const pageTransition = useMemo(
-    () => ({
-      type: 'tween',
-      ease: 'easeInOut',
-      duration: 0.4,
-    }),
-    []
-  );
-
-  // Initialize loading - optimized to 1 second
+  // Initialize loading - faster for better perceived performance
   useEffect(() => {
-    // Simulate loading time (minimum 1 second for better UX)
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 300); // Reduced from 500ms
 
     return () => clearTimeout(loadingTimer);
   }, []);
 
-  // Periodic cleanup to prevent stuck flags (safety net)
-  useEffect(() => {
-    const cleanupInterval = setInterval(() => {
-      // If flags have been locked for more than 2 seconds, force reset
-      if (isScrollingRef.current || isNavigatingRef.current) {
-        console.log('Periodic cleanup - resetting stuck flags');
-        isScrollingRef.current = false;
-        isNavigatingRef.current = false;
-        setIsTransitioning(false);
-      }
-    }, 2000); // Check every 2 seconds
-
-    return () => clearInterval(cleanupInterval);
-  }, []);
-
-  // Handle navigation to section - simplified for better performance
+  // Handle navigation to section - scroll to element
   const scrollToSection = useCallback((sectionId) => {
-    console.log('scrollToSection called:', sectionId, 'isNavigating:', isNavigatingRef.current);
-
-    if (isNavigatingRef.current) {
-      console.warn('Navigation blocked - isNavigating is true');
-      return;
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+      setActiveSection(sectionId);
     }
-
-    isNavigatingRef.current = true;
-    setIsTransitioning(true);
-    setActiveSection(sectionId);
-
-    // Reset transition state after animation completes
-    setTimeout(() => {
-      setIsTransitioning(false);
-      isNavigatingRef.current = false;
-      console.log('Navigation complete, flags reset');
-    }, 500);
   }, []);
 
-  // Detect wheel scroll direction for section navigation - optimized with throttle
-  useEffect(() => {
-    let lastScrollTime = 0;
-    const scrollThrottle = 100; // ms
-
-    const handleWheel = (e) => {
-      const now = Date.now();
-
-      if (isLoading || isScrollingRef.current || isNavigatingRef.current) {
-        return;
-      }
-
-      // Throttle check
-      if (now - lastScrollTime < scrollThrottle) {
-        return;
-      }
-
-      lastScrollTime = now;
-
-      const currentIndex = sections.indexOf(activeSection);
-      let targetIndex = currentIndex;
-
-      if (e.deltaY > 30) {
-        targetIndex = Math.min(currentIndex + 1, sections.length - 1);
-      } else if (e.deltaY < -30) {
-        targetIndex = Math.max(currentIndex - 1, 0);
-      }
-
-      if (targetIndex !== currentIndex) {
-        isScrollingRef.current = true;
-        setIsTransitioning(true);
-        setActiveSection(sections[targetIndex]);
-
-        setTimeout(() => {
-          setIsTransitioning(false);
-          isScrollingRef.current = false;
-        }, 450);
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: true });
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, [isLoading, activeSection, sections]);
-
-  // Keyboard navigation - Arrow Up/Down
+  // Keyboard navigation - Arrow Up/Down for smooth section navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (isLoading || isNavigatingRef.current) return;
+      if (isLoading) return;
 
       const currentIndex = sections.indexOf(activeSection);
       let targetIndex = currentIndex;
@@ -170,14 +66,7 @@ const AppContent = React.memo(() => {
 
       if (targetIndex !== currentIndex) {
         e.preventDefault();
-        isNavigatingRef.current = true;
-        setIsTransitioning(true);
-        setActiveSection(sections[targetIndex]);
-
-        setTimeout(() => {
-          setIsTransitioning(false);
-          isNavigatingRef.current = false;
-        }, 500);
+        scrollToSection(sections[targetIndex]);
       }
     };
 
@@ -186,202 +75,52 @@ const AppContent = React.memo(() => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isLoading, activeSection, sections]);
+  }, [isLoading, activeSection, sections, scrollToSection]);
 
-  // Reset navigation flags when visibility changes (user comes back to tab)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log('Tab visible again - force resetting all flags');
-        // User came back to the tab, reset all flags
-        isScrollingRef.current = false;
-        isNavigatingRef.current = false;
-        setIsTransitioning(false);
-
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-          scrollTimeoutRef.current = null;
-        }
-
-        // Force another reset after small delay to be sure
-        setTimeout(() => {
-          isScrollingRef.current = false;
-          isNavigatingRef.current = false;
-          setIsTransitioning(false);
-          console.log('Secondary reset complete');
-        }, 200);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
-
-  // Reset navigation flags on focus (when user clicks back on window)
-  useEffect(() => {
-    const handleFocus = () => {
-      console.log('Window focus - force resetting all flags');
-      // Reset all navigation flags when window regains focus
-      isScrollingRef.current = false;
-      isNavigatingRef.current = false;
-      setIsTransitioning(false);
-
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = null;
-      }
-    };
-
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, []);
-
-  // Reset navigation flags when external link is clicked
-  useEffect(() => {
-    const handleExternalLink = () => {
-      console.log('External link clicked - resetting navigation flags');
-
-      // Reset all navigation flags immediately
-      isScrollingRef.current = false;
-      isNavigatingRef.current = false;
-      setIsTransitioning(false);
-
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = null;
-      }
-
-      console.log('Navigation flags reset complete');
-    };
-
-    window.addEventListener('externalLinkClicked', handleExternalLink);
-
-    return () => {
-      window.removeEventListener('externalLinkClicked', handleExternalLink);
-    };
-  }, []);
-
-  // Additional reset on window blur (when user switches to another tab)
-  useEffect(() => {
-    const handleBlur = () => {
-      console.log('Window blur - resetting navigation flags');
-      isScrollingRef.current = false;
-      isNavigatingRef.current = false;
-      setIsTransitioning(false);
-    };
-
-    window.addEventListener('blur', handleBlur);
-
-    return () => {
-      window.removeEventListener('blur', handleBlur);
-    };
-  }, []);
-
-  // Reset on pageshow (when user returns to page from BFCache)
-  useEffect(() => {
-    const handlePageShow = () => {
-      console.log('Page show - resetting navigation flags');
-      isScrollingRef.current = false;
-      isNavigatingRef.current = false;
-      setIsTransitioning(false);
-
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = null;
-      }
-    };
-
-    window.addEventListener('pageshow', handlePageShow);
-
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow);
-    };
-  }, []);
-
-  // Reset on mouse movement (user is back and active)
-  useEffect(() => {
-    let mouseMoveTimeout;
-
-    const handleMouseMove = () => {
-      // Clear previous timeout
-      if (mouseMoveTimeout) {
-        clearTimeout(mouseMoveTimeout);
-      }
-
-      // Immediately reset if flags are stuck
-      if (isNavigatingRef.current || isScrollingRef.current) {
-        console.log('Mouse movement detected - immediately resetting stuck flags');
-        isScrollingRef.current = false;
-        isNavigatingRef.current = false;
-        setIsTransitioning(false);
-      }
-
-      // Set new timeout for delayed check
-      mouseMoveTimeout = setTimeout(() => {
-        if (isNavigatingRef.current || isScrollingRef.current) {
-          console.log('Mouse movement timeout - resetting flags');
-          isScrollingRef.current = false;
-          isNavigatingRef.current = false;
-          setIsTransitioning(false);
-        }
-      }, 100);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (mouseMoveTimeout) {
-        clearTimeout(mouseMoveTimeout);
-      }
-    };
-  }, []);
   const handleLoadingComplete = useCallback(() => {
     setIsLoading(false);
   }, []);
 
-  // Render active section component - memoized
-  const renderActiveSection = useCallback(() => {
-    switch (activeSection) {
-      case 'home':
-        return <Hero />;
-      case 'about':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
-            <About />
-          </Suspense>
-        );
-      case 'experience':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
-            <Experience />
-          </Suspense>
-        );
-      case 'contact':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
-            <Contact />
-          </Suspense>
-        );
-      case 'sertifikat':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
-            <Sertifikat />
-          </Suspense>
-        );
-      default:
-        return <Hero />;
-    }
-  }, [activeSection]);
+  // Intersection Observer to detect active section
+  useEffect(() => {
+    // Wait for scroll container to be ready
+    const scrollContainer = document.querySelector('.scroll-container');
+    if (!scrollContainer) return;
+
+    const observerOptions = {
+      root: scrollContainer, // Use scroll container as root
+      rootMargin: '-20% 0px -20% 0px', // Trigger when section is near center
+      threshold: [0, 0.25, 0.5, 0.75, 1], // Multiple thresholds for better detection
+    };
+
+    const observerCallback = (entries) => {
+      // Find the entry with the highest intersection ratio
+      const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+      if (visibleEntries.length > 0) {
+        const mostVisible = visibleEntries.reduce((prev, current) => {
+          return current.intersectionRatio > prev.intersectionRatio ? current : prev;
+        });
+        setActiveSection(mostVisible.target.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observe all sections
+    sections.forEach((sectionId) => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [sections, isLoading]); // Add isLoading to re-run after loading complete
 
   return (
-    <div className={`h-screen transition-all duration-500 ${theme.background} relative p-4`}>
+    <div className={`min-h-screen transition-all duration-500 ${theme.background} relative`}>
       {/* Loader */}
       <SimpleLoader isLoading={isLoading} onComplete={handleLoadingComplete} />
 
@@ -390,100 +129,180 @@ const AppContent = React.memo(() => {
         <>
           <ThemeToggle />
 
-          {/* Animated gradient background */}
+          {/* Animated gradient background - optimized for performance */}
           <div className="fixed inset-0 pointer-events-none -z-10">
             {isDarkMode ? (
               <>
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900"></div>
-                {/* Animated gradient orbs */}
-                <motion.div
-                  className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
-                  style={{
-                    background: 'linear-gradient(to right, #3b82f6, #10b981)',
-                    top: '-10%',
-                    right: '-10%',
-                  }}
-                  animate={{
-                    x: [0, 100, 0],
-                    y: [0, 50, 0],
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-                <motion.div
-                  className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
-                  style={{
-                    background: 'linear-gradient(to left, #06b6d4, #059669)',
-                    bottom: '-10%',
-                    left: '-10%',
-                  }}
-                  animate={{
-                    x: [0, -100, 0],
-                    y: [0, -50, 0],
-                    scale: [1, 1.3, 1],
-                  }}
-                  transition={{
-                    duration: 25,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                {/* Static gradient orbs on mobile, animated on desktop */}
+                {!isMobile ? (
+                  <>
+                    <motion.div
+                      className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+                      style={{
+                        background: 'linear-gradient(to right, #3b82f6, #10b981)',
+                        top: '-10%',
+                        right: '-10%',
+                        willChange: 'transform',
+                      }}
+                      animate={{
+                        x: [0, 100, 0],
+                        y: [0, 50, 0],
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                    <motion.div
+                      className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-20"
+                      style={{
+                        background: 'linear-gradient(to left, #06b6d4, #059669)',
+                        bottom: '-10%',
+                        left: '-10%',
+                        willChange: 'transform',
+                      }}
+                      animate={{
+                        x: [0, -100, 0],
+                        y: [0, -50, 0],
+                        scale: [1, 1.3, 1],
+                      }}
+                      transition={{
+                        duration: 25,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {/* Static orbs for mobile performance */}
+                    <div
+                      className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-15"
+                      style={{
+                        background: 'linear-gradient(to right, #3b82f6, #10b981)',
+                        top: '-10%',
+                        right: '-10%',
+                      }}
+                    />
+                    <div
+                      className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-15"
+                      style={{
+                        background: 'linear-gradient(to left, #06b6d4, #059669)',
+                        bottom: '-10%',
+                        left: '-10%',
+                      }}
+                    />
+                  </>
+                )}
               </>
             ) : (
               <>
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-cyan-50 to-emerald-50"></div>
-                {/* Animated gradient orbs for light mode */}
-                <motion.div
-                  className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-30"
-                  style={{
-                    background: 'linear-gradient(to right, #60a5fa, #34d399)',
-                    top: '-10%',
-                    right: '-10%',
-                  }}
-                  animate={{
-                    x: [0, 80, 0],
-                    y: [0, 40, 0],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-                <motion.div
-                  className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-30"
-                  style={{
-                    background: 'linear-gradient(to left, #22d3ee, #10b981)',
-                    bottom: '-10%',
-                    left: '-10%',
-                  }}
-                  animate={{
-                    x: [0, -80, 0],
-                    y: [0, -40, 0],
-                  }}
-                  transition={{
-                    duration: 25,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                {/* Animated gradient orbs for light mode - also optimized */}
+                {!isMobile ? (
+                  <>
+                    <motion.div
+                      className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-30"
+                      style={{
+                        background: 'linear-gradient(to right, #60a5fa, #34d399)',
+                        top: '-10%',
+                        right: '-10%',
+                        willChange: 'transform',
+                      }}
+                      animate={{
+                        x: [0, 80, 0],
+                        y: [0, 40, 0],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                    <motion.div
+                      className="absolute w-[600px] h-[600px] rounded-full blur-3xl opacity-30"
+                      style={{
+                        background: 'linear-gradient(to left, #22d3ee, #10b981)',
+                        bottom: '-10%',
+                        left: '-10%',
+                        willChange: 'transform',
+                      }}
+                      animate={{
+                        x: [0, -80, 0],
+                        y: [0, -40, 0],
+                      }}
+                      transition={{
+                        duration: 25,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {/* Static orbs for mobile performance */}
+                    <div
+                      className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-25"
+                      style={{
+                        background: 'linear-gradient(to right, #60a5fa, #34d399)',
+                        top: '-10%',
+                        right: '-10%',
+                      }}
+                    />
+                    <div
+                      className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-25"
+                      style={{
+                        background: 'linear-gradient(to left, #22d3ee, #10b981)',
+                        bottom: '-10%',
+                        left: '-10%',
+                      }}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>
 
           <FloatingNavbar activeSection={activeSection} onNavigate={scrollToSection} />
 
-          {/* Animated content container */}
-          <div className="relative w-full h-full overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div key={activeSection} initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition} className="absolute inset-0 w-full h-full">
-                {renderActiveSection()}
-              </motion.div>
-            </AnimatePresence>
+          {/* Scroll container with snap sections */}
+          <div className="scroll-container h-screen overflow-y-auto snap-y snap-mandatory hide-scrollbar" style={{ scrollBehavior: 'smooth' }}>
+            <section id="home" className="snap-section p-4">
+              <Hero />
+            </section>
+
+            <section id="about" className="snap-section p-4">
+              <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+                <About />
+              </Suspense>
+            </section>
+
+            <section id="experience" className="snap-section p-4">
+              <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+                <Experience />
+              </Suspense>
+            </section>
+
+            <section id="gallery" className="snap-section p-4">
+              <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+                <Gallery />
+              </Suspense>
+            </section>
+
+            <section id="contact" className="snap-section p-4">
+              <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+                <Contact />
+              </Suspense>
+            </section>
+
+            <section id="sertifikat" className="snap-section p-4">
+              <Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+                <Sertifikat />
+              </Suspense>
+            </section>
           </div>
         </>
       )}

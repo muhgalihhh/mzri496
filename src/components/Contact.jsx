@@ -124,7 +124,7 @@ const Contact = () => {
 
   return (
     <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-      <motion.main className="flex items-center justify-center min-h-screen px-3 py-4 md:px-4 md:py-8" variants={containerVariants} initial="hidden" animate="visible">
+      <motion.main className={`flex items-center justify-center min-h-[90vh] px-3 py-4 md:px-4 md:py-8 ${theme.textPrimary}`} variants={containerVariants} initial="hidden" animate="visible">
         <div className="w-full max-w-4xl mx-auto">
           <motion.div className="space-y-4 text-center md:space-y-8" variants={itemVariants}>
             {/* Header */}

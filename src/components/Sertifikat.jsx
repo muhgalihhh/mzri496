@@ -1,9 +1,10 @@
 import 'boxicons/css/boxicons.min.css';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { certificates } from '../../data/sertifikat';
 import { useTheme } from '../../hooks/useTheme';
 import ClickSpark from '../blocks/Animations/ClickSpark/ClickSpark';
+import { getAnimationConfig, isMobileDevice } from '../utils/deviceDetection';
 
 const Sertifikat = () => {
   const { theme, isDarkMode } = useTheme();
@@ -11,6 +12,10 @@ const Sertifikat = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
+
+  // Get optimized settings
+  const animConfig = useMemo(() => getAnimationConfig(), []);
+  const isMobile = useMemo(() => isMobileDevice(), []);
 
   // Handler for external links
   const handleExternalLinkClick = () => {
@@ -40,9 +45,6 @@ const Sertifikat = () => {
   };
 
   const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
-
-  // Check if mobile
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
 
   // Update items per page on window resize
   React.useEffect(() => {
@@ -143,7 +145,7 @@ const Sertifikat = () => {
 
   return (
     <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-      <div className="relative flex flex-col min-h-screen px-2 py-4 lg:px-20">
+      <div className={`relative flex flex-col min-h-[90vh] px-2 py-4 lg:px-20 ${theme.textPrimary}`}>
         {/* Category Tabs */}
         <motion.div variants={tabVariants} initial="hidden" animate="visible" className="w-full mx-auto mb-6 max-w-7xl sm:mb-8">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -225,11 +227,11 @@ const Sertifikat = () => {
                         {/* Desktop View - Full Info */}
                         <div className="hidden sm:block">
                           <div className="flex items-center justify-between mb-1.5">
-                            <div className="flex items-center text-xs text-gray-500">
+                            <div className={`flex items-center text-xs ${theme.textMuted}`}>
                               <i className="mr-1 text-xs bx bx-calendar"></i>
                               {new Date(certificate.date).getFullYear()}
                             </div>
-                            <i className={`bx bx-award text-base ${theme.textAccent} ${theme.textSecondary}`}></i>
+                            <i className={`bx bx-award text-base ${theme.textAccent}`}></i>
                           </div>
 
                           <h3 className={`text-sm sm:text-base font-bold mb-1 ${theme.textPrimary} line-clamp-2 leading-tight`}>{certificate.title}</h3>

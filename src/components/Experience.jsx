@@ -160,7 +160,7 @@ const Experience = () => {
 
   return (
     <ClickSpark sparkColor={isDarkMode ? '#fff' : '#000'} sparkSize={10} sparkRadius={15} sparkCount={8} duration={400}>
-      <main className="flex flex-col items-center justify-center min-h-screen p-2 lg:px-20">
+      <main className={`flex flex-col items-center justify-center min-h-[90vh] p-2 lg:px-20 ${theme.textPrimary}`}>
         <motion.div className="w-full max-w-6xl" variants={containerVariants} initial="hidden" animate="visible">
           {/* Header */}
 

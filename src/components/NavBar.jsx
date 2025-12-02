@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 
 const FloatingNavbar = ({ activeSection, onNavigate }) => {
-  const { isDarkMode, theme } = useTheme();
+  const { theme } = useTheme();
   const [isHidden, setIsHidden] = useState(false);
 
   const navItems = [
     { id: 'home', label: "Hi, I'm Galih", icon: 'bx-home' },
     { id: 'about', label: 'About Me', icon: 'bx-user' },
     { id: 'experience', label: 'Experience', icon: 'bx-briefcase' },
+    { id: 'gallery', label: 'Gallery', icon: 'bx-image-alt' },
     { id: 'contact', label: 'Contact Me', icon: 'bx-envelope' },
     { id: 'sertifikat', label: 'Certificates', icon: 'bx-award' },
   ];
